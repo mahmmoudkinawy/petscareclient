@@ -19,7 +19,7 @@ class AboutUs extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.grey.shade200,
         title: const Text(
-          'About us',
+          'About Us',
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -27,8 +27,8 @@ class AboutUs extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(5),
+            const Padding(
+              padding: EdgeInsets.all(5),
             ),
             ListTile(
               leading: Icon(
@@ -42,7 +42,7 @@ class AboutUs extends StatelessWidget {
               subtitle: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                    "Creating an online store is as challenging as running an actual store. You need to make decisions to ensure that it will run smoothly and orders will be fulfilled on time. For starters, here are some of the fundamentals of how to make online shopping websites:"),
+                    "Creating an online presence for your veterinary clinic is crucial in today's digital age. By developing a website, you can provide valuable information to pet owners and streamline appointment scheduling. Here are some key steps to get started with building a website for your pets care clinic."),
               ),
             ),
             const SizedBox(height: 10),
@@ -55,13 +55,13 @@ class AboutUs extends StatelessWidget {
                 color: Colors.blue.shade900,
               ),
               title: Text(
-                "Ecommerce website design and user interface",
+                "Pets Care Website Design And UI",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                    "How your online store look is the defining factor whether your customer will stay or opt out of your platform. The rule of thumb is ease of use. Remember, internet users have a very short attention span and they want everything to be done in an instant. If you can give this to them, you’re likely to enjoy high conversion rates."),
+                    "The appearance of your website is crucial to keeping your customers engaged. This is especially true for a clinic like Pets Care, where customers want to feel confident that they are dealing with a professional and trustworthy establishment. Make sure your website is easy to navigate and visually appealing, with a clean and simple layout that makes it easy for customers to find the information they need. Keep in mind that customers have a short attention span, so it's important to ensure that your website loads quickly and is optimized for mobile devices. By providing a positive user experience, you can increase the likelihood of customer engagement and loyalty."),
               ),
             ),
             const SizedBox(height: 10),
@@ -74,7 +74,7 @@ class AboutUs extends StatelessWidget {
                 color: Colors.blue.shade900,
               ),
               title: Text(
-                "Payment gateways",
+                "Payment Gateways",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               subtitle: Padding(

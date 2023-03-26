@@ -36,13 +36,13 @@ class PrivacyPolicy extends StatelessWidget {
                 color: Colors.blue.shade900,
               ),
               title: Text(
-                "Generate Privacy Policy for websites",
+                "Generate Privacy Policy for Pets Care",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                    "Creating a Privacy Policy for your application or website can take a lot of time. You could either spend tons of money on hiring a lawyer, or you could simply use our service and get a unique Privacy Policy fully customized to your website."),
+                    "Creating a Privacy Policy for your app or website can be time-consuming and expensive. Our service can provide you with a fully customized Privacy Policy that is compliant with relevant laws and regulations, specifically tailored to the needs of Pets Care. Protect your users' privacy and ensure compliance today."),
               ),
             ),
             const SizedBox(height: 10),
@@ -55,13 +55,13 @@ class PrivacyPolicy extends StatelessWidget {
                 color: Colors.blue.shade900,
               ),
               title: Text(
-                "Generate Privacy Policy for e-commerce stores",
+                "Generate Privacy Policy for Pets Care Clinic",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                    "If your website or app has the option to receive payments then including a Privacy Policy is required by law. We will make sure that your Privacy Policy ensures that you stay in line with your legal obligations."),
+                    "Our Pets Care Clinic is committed to protecting the privacy and security of our users. This Privacy Policy explains how we collect, use, and share information about you when you use our app. By using our app, you consent to our collection and use of your information as described in this policy. We reserve the right to modify this policy at any time, so please review it frequently."),
               ),
             ),
             const SizedBox(height: 10),
@@ -92,13 +92,13 @@ class PrivacyPolicy extends StatelessWidget {
                 color: Colors.blue.shade900,
               ),
               title: Text(
-                "Generate Privacy Policy for Facebook pages & apps",
+                "Generate Privacy Policy for Pets Care",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                    "Many platforms like facebook are requiring users that are submitting their official apps to submit a Privacy Policy even if you are not collecting any data from your users. Generate your Privacy Policy and get your unique link to submit to those platforms."),
+                    "Many platforms like pets care apps are requiring users that are submitting their official apps to submit a Privacy Policy even if you are not collecting any data from your users. Generate your Privacy Policy and get your unique link to submit to those platforms."),
               ),
             ),
             Padding(
@@ -128,7 +128,7 @@ class PrivacyPolicy extends StatelessWidget {
                 color: Colors.blue.shade900,
               ),
               title: Text(
-                "Download your Privacy Policy",
+                "Download Your Privacy Policy",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               subtitle: Padding(

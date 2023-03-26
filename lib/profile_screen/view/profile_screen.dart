@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petscareclient/profile_screen/view/aboutus_screen.dart';
-import 'package:petscareclient/profile_screen/view/privasypolicy.dart';
+import 'package:petscareclient/profile_screen/view/privacy_policy_screen.dart';
 import 'package:petscareclient/profile_screen/view/setting_screen.dart';
 import 'package:petscareclient/src/screens/home_screen.dart';
 
