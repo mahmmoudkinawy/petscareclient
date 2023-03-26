@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:http/http.dart' as http;
-import 'login_screen.dart';
+
+import '../../logged_up_page.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -46,7 +47,7 @@ class RegisterScreenState extends State<RegisterScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => LoginScreen()), //will be home screen
+            builder: (context) => Logged_up()), //will be home screen
       );
     } else {
       Flushbar(
