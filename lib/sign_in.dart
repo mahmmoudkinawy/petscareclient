@@ -1,14 +1,15 @@
-import 'dart:developer';
-import 'package:get/get.dart';
-import 'package:petscareclient/expanded.dart';
-import 'package:petscareclient/profile_screen/view/profile_screen.dart';
+import 'dart:convert';
+import 'package:another_flushbar/flushbar.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:petscareclient/src/screens/home_screen.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:http/http.dart' as http;
 
 import 'logged_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -18,26 +19,51 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   bool isVisable = true;
 
-  late String username;
-  late String password;
+  Future<void> _submitData() async {
+    final email = emailController.text;
+    final password = passwordController.text;
 
-  late GlobalKey<FormState> key;
+    final response = await http.post(
+      Uri.parse('http://pets-care.somee.com/api/account/login'),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: json.encode({
+        'email': email,
+        'password': password,
+      }),
+    );
 
-  @override
-  void initState() {
-    super.initState();
-    key = GlobalKey<FormState>();
-    // usernameController = TextEditingController();
-    // passContoller = TextEditingController();
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      print(response.body);
+      // final data = jsonDecode(response.body) as Map<String, dynamic>;
+      // final user = User.fromJson(data);
+      // saveUser(user);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } else {
+      Flushbar(
+        message: 'Email or password is incorrect',
+        duration: const Duration(seconds: 3),
+        flushbarPosition: FlushbarPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        borderRadius: BorderRadius.circular(10),
+        icon: const Icon(
+          Icons.info_outline,
+          color: Colors.white,
+        ),
+        maxWidth: MediaQuery.of(context).size.width *
+            0.9, // set the width to 80% of the screen width
+      )..show(context);
+    }
   }
-  @override
-  void dispose() {
-    super.dispose();
-    // usernameController.dispose();
-    // passContoller.dispose();
-  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,18 +86,21 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: Image.asset('assets/1.jpg')),
               ),
               const SizedBox(height: 30),
-              Form(
-                  key: key,
+              FormBuilder(
+                  key: formKey,
                   child: Column(
                     children: [
                       Card(
-                        elevation:20,
+                        elevation: 20,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Directionality(
                           textDirection: TextDirection.ltr,
-                          child: TextFormField(
+                          child: FormBuilderTextField(
+                            name: 'email',
+                            controller: emailController,
+                            keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15.0),
@@ -87,34 +116,31 @@ class _SignInScreenState extends State<SignInScreen> {
                                   matchTextDirection: true,
                                 ),
                               ),
-
                               labelText: ' Email',
                               hintStyle: GoogleFonts.vazirmatn().copyWith(
                                 fontSize: 14,
                                 color: const Color(0xffC2C2C2),
                               ),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please Enter Your email';
-                              }
-                              return null;
-                            },
-                            onSaved: (newValue) {
-                              username = newValue!;
-                            },
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(
+                                  errorText: 'Email is required.'),
+                              FormBuilderValidators.email(),
+                            ]),
                           ),
                         ),
                       ),
                       const SizedBox(height: 18),
                       Card(
-                        elevation:20,
+                        elevation: 20,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Directionality(
                           textDirection: TextDirection.ltr,
-                          child: TextFormField(
+                          child: FormBuilderTextField(
+                            name: 'password',
+                            controller: passwordController,
                             obscureText: isVisable,
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -141,35 +167,18 @@ class _SignInScreenState extends State<SignInScreen> {
                                       isVisable = !isVisable;
                                     });
                                   }),
-                              labelText: ' password',
+                              labelText: ' Password',
                               hintTextDirection: TextDirection.ltr,
-
                               hintStyle: GoogleFonts.vazirmatn().copyWith(
                                 fontSize: 14,
                                 color: const Color(0xffC2C2C2),
                               ),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please Enter Your password';
-                              }
-
-
-                              if (value.length < 8 &&
-                                  username == 'mohamed@gmail.com') {
-                                Fluttertoast.showToast(
-                                    msg: "Please Enter at least 8 chars",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.BOTTOM,
-                                    backgroundColor: Colors.white,
-                                    textColor: Colors.black,
-                                    fontSize: 16.0);
-                              }
-                              return null;
-                            },
-                            onSaved: (newValue) {
-                              password = newValue!;
-                            },
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(
+                                  errorText: 'Password is required.'),
+                              FormBuilderValidators.minLength(8),
+                            ]),
                           ),
                         ),
                       ),
@@ -187,17 +196,22 @@ class _SignInScreenState extends State<SignInScreen> {
                       width: 300,
                       child: ElevatedButton(
                         style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(22.0),
-                                  side: BorderSide(color: Colors.black)
-                              ),
+                                  side: const BorderSide(color: Colors.black)),
                             ),
                             // backgroundColor: MaterialStateProperty.all(
                             //     Color.fromARGB(255, 96, 177, 243)),
                             padding: MaterialStateProperty.all(
                                 const EdgeInsets.all(15))),
-                        onPressed: _signInWithForm,
+                        onPressed: () async {
+                          formKey.currentState!.save();
+                          if (formKey.currentState!.validate()) {
+                            _submitData();
+                          }
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
@@ -236,7 +250,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
-
                 ],
               ),
               Container(
@@ -245,51 +258,7 @@ class _SignInScreenState extends State<SignInScreen> {
             ],
           ),
         ),
-
       ),
     );
-  }
-
-  _signInWithForm() {
-    if (!key.currentState!.validate()) return;
-    key.currentState?.save();
-    log('email:$username\npassword:$password');
-    if (username == 'mohamed@gmail.com' && password == '12345678') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
-      final snackBar = SnackBar(
-        content: const Text('Welcome to my vet',
-            style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black,
-        dismissDirection: DismissDirection.up,
-        padding: EdgeInsets.all(7),
-        duration: Duration(seconds: 5),
-        action: SnackBarAction(
-          label: 'إخفاء',
-          onPressed: () {
-            // Some code to undo the change.
-          },
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      Fluttertoast.showToast(
-          msg: 'You are logged successfully',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.white,
-          textColor: Colors.pink,
-          fontSize: 16.0);
-      return;
-    } else {
-      Fluttertoast.showToast(
-          msg: 'please correct your data..',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.white,
-          textColor: Colors.indigo,
-          fontSize: 16.0);
-    }
   }
 }
