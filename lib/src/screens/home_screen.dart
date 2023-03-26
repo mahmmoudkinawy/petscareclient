@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:petscareclient/dd.dart';
+import 'package:petscareclient/src/screens/doctors_screen.dart';
 
 import '../../profile_screen/view/profile_screen.dart';
 import '../../profile_screen/view/setting_screen.dart';
@@ -12,11 +12,13 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
+
 bool _isTap = false;
+
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: GridView.count(
           crossAxisCount: 2,
@@ -29,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>  DoctorsList(),
+                    builder: (context) => DoctorsScreen(),
                   ),
                 );
               },
@@ -41,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CategoryDetailScreen(
+                    builder: (context) => const CategoryDetailScreen(
                       category: 'Services',
                     ),
                   ),
@@ -112,7 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: Icon(Icons.home,color: _isTap?Colors.white:Colors.indigo),
+              icon: Icon(Icons.home,
+                  color: _isTap ? Colors.white : Colors.indigo),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -131,16 +134,20 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                );              },
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreen()),
+                );
+              },
             ),
             IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SettingScreen()),
-                );              },
+                  MaterialPageRoute(
+                      builder: (context) => const SettingScreen()),
+                );
+              },
             ),
           ],
         ),
@@ -192,4 +199,3 @@ class CategoryCard extends StatelessWidget {
     );
   }
 }
-

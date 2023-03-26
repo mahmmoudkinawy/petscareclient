@@ -1,18 +1,16 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:petscareclient/profile_screen/view/aboutus_screen.dart';
-import 'package:petscareclient/profile_screen/view/privasypolicy.dart';
-import 'package:petscareclient/profile_screen/view/setting_screen.dart';
 
 import '../models/doctor.dart';
+import '../models/user.dart';
 
-class DoctorScreen extends StatefulWidget {
+class DoctorsScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _DoctorScreenState();
+  State<DoctorsScreen> createState() => _DoctorsScreenState();
 }
 
-class _DoctorScreenState extends State<DoctorScreen> {
+class _DoctorsScreenState extends State<DoctorsScreen> {
   List<Doctor> _doctors = [];
 
   @override
@@ -21,121 +19,120 @@ class _DoctorScreenState extends State<DoctorScreen> {
     _fetchDoctors();
   }
 
-  Future<void> _fetchDoctors() async {
-    final response =
-        await http.get(Uri.parse('http://pets-care.somee.com/api/doctors'));
+  void _fetchDoctors() async {
+    final user = await getUser();
+
+    final response = await http.get(
+        Uri.parse('http://pets-care.somee.com/api/doctors'),
+        headers: {'Authorization': 'Bearer ${user!.token}'});
+
+    print('Token: ${user.token}');
+
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body) as List<dynamic>;
-      final doctors = data.map((json) => Doctor.fromJson(json)).toList();
+      final jsonList = json.decode(response.body) as List;
+      final doctorsList =
+          jsonList.map((json) => Doctor.fromJson(json)).toList();
       setState(() {
-        _doctors = doctors;
+        _doctors = doctorsList;
       });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_doctors == null) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
     } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Doctors'),
-        ),
-        body:
-        Column(
-          children: [
-            ListTile(
-              leading: Icon(
-                Icons.favorite_border_sharp,
-                color: Colors.blue.shade900,
-              ),
-              title: Text('Favorite meals'),
-              trailing: const Icon(Icons.keyboard_arrow_right),
-              onTap: () {},
-            ),
-            // ListView.builder(
-            //   itemCount: _doctors.length,
-            //   itemBuilder: (context, index) {
-            //     final doctor = _doctors[index];
-            //     return DoctorCard(
-            //         name: doctor.fullName,
-            //         image: doctor.imageUrl,
-            //         phone: doctor.phoneNumber,
-            //         specialty: doctor.specialty);
-            //   },
-            // ),
-          ],
-        ),
-
-      );
+      throw Exception('Failed to load doctors');
     }
   }
-}
-
-class DoctorCard extends StatelessWidget {
-  final String name;
-  final String image;
-  final String phone;
-  final String specialty;
-
-  DoctorCard({
-    required this.name,
-    required this.image,
-    required this.phone,
-    required this.specialty,
-  });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Card(
-        elevation: 4.0,
-        child: InkWell(
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.network(
-                  image,
-                  height: 80.0,
-                  width: 80.0,
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    specialty,
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    phone,
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 16.0,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            backgroundColor: Colors.white,
+            elevation: 0,
+            title: Text(
+              'Available Doctors',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
-        ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            sliver: SliverGrid.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+              childAspectRatio: 0.8,
+              children: _doctors
+                  .map((doctor) => FutureBuilder(
+                      future:
+                          precacheImage(NetworkImage(doctor.imageUrl), context),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return Card(
+                            elevation: 2,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(4),
+                                      topRight: Radius.circular(4),
+                                    ),
+                                    child: Image.network(
+                                      doctor.imageUrl,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        doctor.fullName,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        doctor.specialty,
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return Card(
+                            elevation: 2,
+                            child: Container(
+                              height: 200,
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                          );
+                        }
+                      }))
+                  .toList(),
+            ),
+          ),
+        ],
       ),
     );
   }

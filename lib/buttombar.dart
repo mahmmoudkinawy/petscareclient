@@ -9,7 +9,7 @@ class ButtomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:  BottomAppBar(
+      body: BottomAppBar(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -19,7 +19,8 @@ class ButtomBar extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );              },
+                );
+              },
             ),
             IconButton(
               icon: Icon(Icons.search),
@@ -32,16 +33,20 @@ class ButtomBar extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                );              },
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreen()),
+                );
+              },
             ),
             IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SettingScreen()),
-                );              },
+                  MaterialPageRoute(
+                      builder: (context) => const SettingScreen()),
+                );
+              },
             ),
           ],
         ),
