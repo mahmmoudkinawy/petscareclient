@@ -1,15 +1,17 @@
 import 'dart:convert';
+
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:petscareclient/src/screens/home_screen.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:http/http.dart' as http;
 
 import '../../logged_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:petscareclient/src/screens/home_screen.dart';
+
+import '../models/user.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -39,9 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       print(response.body);
-      // final data = jsonDecode(response.body) as Map<String, dynamic>;
-      // final user = User.fromJson(data);
-      // saveUser(user);
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final user = User.fromJson(data);
+      saveUser(user);
 
       Navigator.pushReplacement(
         context,
