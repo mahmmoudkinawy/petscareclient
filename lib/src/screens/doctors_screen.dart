@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/doctor.dart';
 import '../models/user.dart';
+import 'doctor_details_screen.dart';
 
 class DoctorsScreen extends StatefulWidget {
   @override
@@ -62,10 +63,21 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
               mainAxisSpacing: 16,
               crossAxisSpacing: 16,
               childAspectRatio: 0.8,
-              children: _doctors
-                  .map((doctor) => FutureBuilder(
-                      future:
-                          precacheImage(NetworkImage(doctor.imageUrl), context),
+              children: _doctors.map(
+                (doctor) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              DoctorDetailsScreen(doctor: doctor),
+                        ),
+                      );
+                    },
+                    child: FutureBuilder(
+                      future: precacheImage(
+                          NetworkImage(doctor.imageUrl!), context),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.done) {
                           return Card(
@@ -80,7 +92,7 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                                       topRight: Radius.circular(4),
                                     ),
                                     child: Image.network(
-                                      doctor.imageUrl,
+                                      doctor.imageUrl!,
                                       fit: BoxFit.cover,
                                       loadingBuilder:
                                           (context, child, loadingProgress) {
@@ -128,8 +140,11 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                             ),
                           );
                         }
-                      }))
-                  .toList(),
+                      },
+                    ),
+                  );
+                },
+              ).toList(),
             ),
           ),
         ],
