@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import '../models/user.dart';
 
 class ClinicsScreen extends StatefulWidget {
+  const ClinicsScreen({super.key});
+
   @override
   State<ClinicsScreen> createState() => _ClinicsScreenState();
 }
