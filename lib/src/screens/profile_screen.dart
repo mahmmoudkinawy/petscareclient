@@ -1,12 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:petscareclient/profile_screen/view/aboutus_screen.dart';
-import 'package:petscareclient/profile_screen/view/privacy_policy_screen.dart';
-import 'package:petscareclient/profile_screen/view/setting_screen.dart';
 import 'package:petscareclient/src/models/user.dart';
 import 'package:petscareclient/src/screens/home_screen.dart';
 import 'package:petscareclient/src/screens/login_screen.dart';
+
+import 'aboutus_screen.dart';
+import 'privacy_policy_screen.dart';
+import 'setting_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -155,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const SettingScreen()),
+                                builder: (context) => const SettingsScreen()),
                           );
                         },
                       ),
@@ -230,7 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const SettingScreen()),
+                      builder: (context) => const SettingsScreen()),
                 );
               },
             ),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:petscareclient/src/screens/doctors_screen.dart';
 
-import '../../profile_screen/view/profile_screen.dart';
-import '../../profile_screen/view/setting_screen.dart';
 import 'category_detail_screen.dart';
 import 'clinics_screen.dart';
-import 'doctors_screen.dart';
+import 'profile_screen.dart';
+import 'setting_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -43,7 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ClinicsScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const ClinicsScreen()),
                 );
               },
             ),
@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CategoryDetailScreen(
+                    builder: (context) => const CategoryDetailScreen(
                       category: 'Pets',
                     ),
                   ),
@@ -142,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const SettingScreen()),
+                      builder: (context) => const SettingsScreen()),
                 );
               },
             ),

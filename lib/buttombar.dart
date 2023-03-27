@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:petscareclient/profile_screen/view/profile_screen.dart';
-import 'package:petscareclient/profile_screen/view/setting_screen.dart';
 import 'package:petscareclient/src/screens/home_screen.dart';
+
+import 'src/screens/profile_screen.dart';
+import 'src/screens/setting_screen.dart';
 
 class ButtomBar extends StatelessWidget {
   const ButtomBar({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class ButtomBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: Icon(Icons.home),
+              icon: const Icon(Icons.home),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -23,13 +24,13 @@ class ButtomBar extends StatelessWidget {
               },
             ),
             IconButton(
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
               onPressed: () {
                 // Navigate to search screen
               },
             ),
             IconButton(
-              icon: Icon(Icons.person),
+              icon: const Icon(Icons.person),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -39,12 +40,13 @@ class ButtomBar extends StatelessWidget {
               },
             ),
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const SettingScreen()),
+                    builder: (context) => const SettingsScreen(),
+                  ),
                 );
               },
             ),

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'package:petscareclient/profile_screen/view/profile_screen.dart';
 import 'package:petscareclient/src/screens/home_screen.dart';
 
-class SettingScreen extends StatefulWidget {
-  const SettingScreen({Key? key}) : super(key: key);
+import 'profile_screen.dart';
+
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({Key? key}) : super(key: key);
   @override
-  State<SettingScreen> createState() => _SettingScreenState();
+  State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 bool _isTap = false;
 
-class _SettingScreenState extends State<SettingScreen> {
+class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -242,7 +243,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const SettingScreen()),
+                      builder: (context) => const SettingsScreen()),
                 );
               },
             ),
