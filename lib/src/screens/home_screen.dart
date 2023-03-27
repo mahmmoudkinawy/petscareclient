@@ -4,6 +4,7 @@ import 'package:petscareclient/src/screens/doctors_screen.dart';
 import '../../profile_screen/view/profile_screen.dart';
 import '../../profile_screen/view/setting_screen.dart';
 import 'category_detail_screen.dart';
+import 'clinics_screen.dart';
 import 'doctors_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,16 +38,12 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             CategoryCard(
-              title: 'Services',
+              title: 'Clinics',
               image: 'assets/1.jpg',
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const CategoryDetailScreen(
-                      category: 'Services',
-                    ),
-                  ),
+                  MaterialPageRoute(builder: (context) => ClinicsScreen()),
                 );
               },
             ),
