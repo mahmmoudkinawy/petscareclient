@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 import '../models/clinic.dart';
 import '../models/user.dart';
@@ -90,6 +93,180 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
     }
   }
 
+  Future<void> _createClinic() async {
+    final _formKey = GlobalKey<FormBuilderState>();
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add Clinic'),
+        content: FormBuilder(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FormBuilderTextField(
+                name: 'name',
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                ),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.maxLength(50),
+                  FormBuilderValidators.minLength(3),
+                ]),
+              ),
+              FormBuilderTextField(
+                name: 'address',
+                decoration: const InputDecoration(
+                  labelText: 'Address',
+                ),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.maxLength(100),
+                  FormBuilderValidators.minLength(5),
+                ]),
+              ),
+              FormBuilderTextField(
+                name: 'phoneNumber',
+                decoration: const InputDecoration(
+                  labelText: 'Phone Number',
+                ),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(
+                      errorText: 'Phone Number is required.'),
+                  FormBuilderValidators.match(
+                    r"^01[0-2,5]{1}[0-9]{8}$",
+                    errorText: "Enter a valid Egyptian Phone Number.",
+                  )
+                ]),
+              ),
+              FormBuilderDateTimePicker(
+                name: 'openingTime',
+                inputType: InputType.time,
+                format: DateFormat('h:mm a'),
+                decoration: const InputDecoration(
+                  labelText: 'Opening Time',
+                ),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                ]),
+              ),
+              FormBuilderDateTimePicker(
+                name: 'closingTime',
+                inputType: InputType.time,
+                format: DateFormat('h:mm a'),
+                decoration: const InputDecoration(
+                  labelText: 'Closing Time',
+                ),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                ]),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                final openingTime = _formKey
+                    .currentState!.fields['openingTime']!.value as DateTime;
+                final closingTime = _formKey
+                    .currentState!.fields['closingTime']!.value as DateTime;
+
+                if (closingTime.isBefore(openingTime)) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text(
+                      'Closing time must be greater than opening time.',
+                    )),
+                  );
+                } else {
+                  final openingTime = _formKey
+                      .currentState!.fields['openingTime']!.value as DateTime;
+                  final closingTime = _formKey
+                      .currentState!.fields['closingTime']!.value as DateTime;
+
+                  final openingTimeString =
+                      DateFormat('HH:mm:ss').format(openingTime.toLocal());
+                  final closingTimeString =
+                      DateFormat('HH:mm:ss').format(closingTime.toLocal());
+
+                  final Clinic newClinic = Clinic(
+                    id: '687fe318-d3a4-4a15-afd7-f5af860d009c', // Set to a negative number to indicate a new clinic
+                    name:
+                        _formKey.currentState!.fields['name']!.value as String,
+                    address: _formKey.currentState!.fields['address']!.value
+                        as String,
+                    phoneNumber: _formKey
+                        .currentState!.fields['phoneNumber']!.value as String,
+                    openingTime: openingTimeString,
+                    closingTime: closingTimeString,
+                  );
+                  setState(() {
+                    _clinics.add(newClinic);
+                  });
+                  _fetchClinics();
+                  Navigator.pop(context, true);
+                }
+              }
+            },
+            child: const Text('Add'),
+          ),
+        ],
+      ),
+    );
+
+    // If the user submitted the clinic data, send it to the API
+    if (confirmed == true) {
+      final user = await getUser();
+
+      final openingTime =
+          _formKey.currentState!.fields['openingTime']!.value as DateTime;
+      final closingTime =
+          _formKey.currentState!.fields['closingTime']!.value as DateTime;
+
+      final openingTimeString =
+          DateFormat('HH:mm:ss').format(openingTime.toLocal());
+      final closingTimeString =
+          DateFormat('HH:mm:ss').format(closingTime.toLocal());
+
+      final response = await http.post(
+        Uri.parse('http://pets-care.somee.com/api/clinics'),
+        headers: {
+          'Authorization': 'Bearer ${user!.token}',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode({
+          'name': _formKey.currentState!.fields['name']!.value,
+          'address': _formKey.currentState!.fields['address']!.value,
+          'phoneNumber': _formKey.currentState!.fields['phoneNumber']!.value,
+          'openingTime': openingTimeString,
+          'closingTime': closingTimeString,
+        }),
+      );
+
+      print("REspost ${response.body}");
+      print("Code: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        final clinicJson = jsonDecode(response.body) as Map<String, dynamic>;
+        final clinic = Clinic.fromJson(clinicJson);
+        setState(() {
+          _clinics.add(clinic);
+          _fetchClinics();
+        });
+      } else {
+        throw Exception('Failed to create clinic');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,8 +279,8 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ElevatedButton(
-              onPressed: () {
-                // Navigate to the screen to create a new clinic
+              onPressed: () async {
+                await _createClinic();
               },
               child: const Text('Add Clinic'),
             ),
