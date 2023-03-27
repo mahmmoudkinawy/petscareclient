@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:petscareclient/profile_screen/view/profile_screen.dart';
 import 'package:petscareclient/src/screens/home_screen.dart';
 
@@ -7,7 +8,9 @@ class SettingScreen extends StatefulWidget {
   @override
   State<SettingScreen> createState() => _SettingScreenState();
 }
-  bool _isTap = false;
+
+bool _isTap = false;
+
 class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,7 @@ class _SettingScreenState extends State<SettingScreen> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
         ),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
@@ -37,8 +40,10 @@ class _SettingScreenState extends State<SettingScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                "common",
-                style: TextStyle(color: Colors.grey.shade700),
+                "Common",
+                style: TextStyle(
+                  color: Colors.grey.shade700,
+                ),
               ),
             ),
             Card(
@@ -54,8 +59,8 @@ class _SettingScreenState extends State<SettingScreen> {
                       Icons.language,
                       color: Colors.blue.shade900,
                     ),
-                    title: Text('Language'),
-                    trailing: Text(
+                    title: const Text('Language'),
+                    trailing: const Text(
                       "English",
                       style: TextStyle(color: Colors.grey),
                     ),
@@ -64,17 +69,6 @@ class _SettingScreenState extends State<SettingScreen> {
                     width: double.infinity,
                     height: 1,
                     color: Colors.grey.shade300,
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.cloud,
-                      color: Colors.blue.shade900,
-                    ),
-                    title: Text('Environment'),
-                    trailing: Text(
-                      "Production",
-                      style: TextStyle(color: Colors.grey),
-                    ),
                   ),
                   Container(
                     width: double.infinity,
@@ -86,10 +80,14 @@ class _SettingScreenState extends State<SettingScreen> {
                       Icons.devices,
                       color: Colors.blue.shade900,
                     ),
-                    title: Text('Platform'),
-                    trailing: Text(
-                      "Default",
-                      style: TextStyle(color: Colors.grey),
+                    title: const Text(
+                      'Platform',
+                    ),
+                    trailing: const Text(
+                      "Android",
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                   Container(
@@ -98,12 +96,12 @@ class _SettingScreenState extends State<SettingScreen> {
                     color: Colors.grey.shade300,
                   ),
                   SwitchListTile(
-                      activeColor: Color(0xFF8BC34A),
+                      activeColor: Colors.grey,
                       secondary: Icon(
                         Icons.format_paint,
                         color: Colors.blue.shade900,
                       ),
-                      title: const Text('Enable custom theme'),
+                      title: const Text('Enable Custom Theme - Coming Soon'),
                       value: false,
                       onChanged: (bool value) {}),
                 ],
@@ -111,9 +109,11 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
             const SizedBox(height: 40),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+              ),
               child: Text(
-                "Contact us",
+                "Contact Us",
                 style: TextStyle(color: Colors.grey.shade700),
               ),
             ),
@@ -130,9 +130,9 @@ class _SettingScreenState extends State<SettingScreen> {
                       Icons.phone,
                       color: Colors.blue.shade900,
                     ),
-                    title: Text('Phone number'),
-                    subtitle: Text(
-                      "01155987379",
+                    title: const Text('Phone Number'),
+                    subtitle: const Text(
+                      "01271128361",
                       style: TextStyle(color: Colors.grey),
                     ),
                   ),
@@ -146,9 +146,9 @@ class _SettingScreenState extends State<SettingScreen> {
                       Icons.email,
                       color: Colors.blue.shade900,
                     ),
-                    title: Text('Email'),
-                    subtitle: Text(
-                      "nmuhamed454@gmail.com",
+                    title: const Text('Email'),
+                    subtitle: const Text(
+                      "pets-care@support.com",
                       style: TextStyle(color: Colors.grey),
                     ),
                   ),
@@ -159,7 +159,7 @@ class _SettingScreenState extends State<SettingScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                "Security",
+                "Security - Coming Soon",
                 style: TextStyle(color: Colors.grey.shade700),
               ),
             ),
@@ -172,7 +172,7 @@ class _SettingScreenState extends State<SettingScreen> {
               child: Column(
                 children: [
                   SwitchListTile(
-                      activeColor: Color(0xFF8BC34A),
+                      activeColor: Colors.grey,
                       secondary: Icon(
                         Icons.screen_lock_portrait_sharp,
                         color: Colors.blue.shade900,
@@ -189,7 +189,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     color: Colors.grey.shade300,
                   ),
                   SwitchListTile(
-                      activeColor: Color(0xFF8BC34A),
+                      activeColor: Colors.grey,
                       secondary: Icon(
                         Icons.fingerprint,
                         color: Colors.blue.shade900,
@@ -200,47 +200,8 @@ class _SettingScreenState extends State<SettingScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                "Allow application to stored fingerprint IDs",
-                style: TextStyle(color: Colors.grey.shade700),
-              ),
-            ),
-            Card(
-              elevation: 4,
-              margin: const EdgeInsets.fromLTRB(5, 8, 5, 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                children: [
-                  SwitchListTile(
-                      activeColor: Color(0xFF8BC34A),
-                      secondary: Icon(
-                        Icons.password,
-                        color: Colors.blue.shade900,
-                      ),
-                      title: const Text('Change password'),
-                      value: false,
-                      onChanged: (bool value) {}),
-                  Container(
-                    width: double.infinity,
-                    height: 1,
-                    color: Colors.grey.shade300,
-                  ),
-                  SwitchListTile(
-                      activeColor: Color(0xFF8BC34A),
-                      secondary: Icon(
-                        Icons.notifications_active,
-                        color: Colors.blue.shade900,
-                      ),
-                      title: const Text('Enable notifications'),
-                      value: true,
-                      onChanged: (bool value) {}),
-                ],
-              ),
+            const SizedBox(
+              height: 40,
             ),
           ],
         ),
@@ -250,7 +211,7 @@ class _SettingScreenState extends State<SettingScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: Icon(Icons.home),
+              icon: const Icon(Icons.home),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -259,13 +220,13 @@ class _SettingScreenState extends State<SettingScreen> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
               onPressed: () {
                 // Navigate to search screen
               },
             ),
             IconButton(
-              icon: Icon(Icons.person),
+              icon: const Icon(Icons.person),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -275,7 +236,8 @@ class _SettingScreenState extends State<SettingScreen> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.settings,color: _isTap?Colors.white:Colors.indigo),
+              icon: Icon(Icons.settings,
+                  color: _isTap ? Colors.white : Colors.indigo),
               onPressed: () {
                 Navigator.push(
                   context,
