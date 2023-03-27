@@ -5,14 +5,20 @@ class User {
   String name;
   String? imageUrl;
   String token;
+  List<String> roles;
 
-  User({required this.name, this.imageUrl, required this.token});
+  User(
+      {required this.name,
+      this.imageUrl,
+      required this.token,
+      required this.roles});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       name: json['name'],
       imageUrl: json['imageUrl'],
       token: json['token'],
+      roles: List<String>.from(json['roles']),
     );
   }
 
@@ -20,6 +26,7 @@ class User {
         'name': name,
         'imageUrl': imageUrl,
         'token': token,
+        'roles': roles,
       };
 }
 

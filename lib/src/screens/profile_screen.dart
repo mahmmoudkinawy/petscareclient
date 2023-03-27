@@ -4,6 +4,7 @@ import 'package:petscareclient/src/screens/home_screen.dart';
 import 'package:petscareclient/src/screens/login_screen.dart';
 
 import 'aboutus_screen.dart';
+import 'manage_clinics_screen.dart';
 import 'privacy_policy_screen.dart';
 import 'setting_screen.dart';
 
@@ -41,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
         ),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
@@ -59,30 +60,84 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  margin: const EdgeInsets.all(5),
-                  height: 100.0,
-                  width: 100.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    //set border radius to 50% of square height and width
-                    image: DecorationImage(
-                      image:
-                          NetworkImage(_user!.imageUrl ?? 'assets/profile.jpg'),
-                      fit: BoxFit.cover, //change image fill type
-                    ),
-                  ),
+                Stack(
+                  children: [
+                    if (_user?.imageUrl != null)
+                      Container(
+                        margin: const EdgeInsets.all(5),
+                        height: 100.0,
+                        width: 100.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          image: DecorationImage(
+                            image: NetworkImage(_user!.imageUrl!),
+                            fit: BoxFit.cover, //change image fill type
+                          ),
+                        ),
+                      )
+                    else if (_user?.name != null)
+                      Container(
+                        margin: const EdgeInsets.all(5),
+                        height: 100.0,
+                        width: 100.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Colors.grey,
+                        ),
+                        child: Center(
+                          child: Text(
+                            _user!.name.substring(0, 1).toUpperCase(),
+                            style: const TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
                 Text(
                   _user!.name,
                   style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 )
               ],
             ),
             const SizedBox(height: 30),
             Column(
               children: [
+                if (_user != null && _user!.roles.contains('Doctor'))
+                  Card(
+                    elevation: 4,
+                    margin: const EdgeInsets.fromLTRB(5, 8, 5, 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: Icon(
+                            Icons.privacy_tip,
+                            color: Colors.blue.shade900,
+                          ),
+                          title: const Text('Manage Clinics'),
+                          trailing: const Icon(Icons.cabin),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ManageClinicsScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 Card(
                   elevation: 4,
                   margin: const EdgeInsets.fromLTRB(5, 8, 5, 16),
