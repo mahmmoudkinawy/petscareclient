@@ -208,11 +208,10 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
                     openingTime: openingTimeString,
                     closingTime: closingTimeString,
                   );
+                  Navigator.pop(context, true);
                   setState(() {
                     _clinics.add(newClinic);
                   });
-                  _fetchClinics();
-                  Navigator.pop(context, true);
                 }
               }
             },
