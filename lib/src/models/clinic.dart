@@ -1,10 +1,10 @@
 class Clinic {
-  final String id;
-  final String name;
-  final String address;
-  final String phoneNumber;
-  final String openingTime;
-  final String closingTime;
+  String id;
+  String name;
+  String address;
+  String phoneNumber;
+  String openingTime;
+  String closingTime;
 
   Clinic({
     required this.id,
@@ -17,12 +17,27 @@ class Clinic {
 
   factory Clinic.fromJson(Map<String, dynamic> json) {
     return Clinic(
-      id: json['id'],
-      name: json['name'],
-      address: json['address'],
-      phoneNumber: json['phoneNumber'],
-      openingTime: json['openingTime'],
-      closingTime: json['closingTime'],
+      id: json['id'] as String,
+      name: json['name'] as String,
+      address: json['address'] as String,
+      phoneNumber: json['phoneNumber'] as String,
+      openingTime: json['openingTime'] as String,
+      closingTime: json['closingTime'] as String,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'address': address,
+      'phoneNumber': phoneNumber,
+      'openingTime': openingTime,
+      'closingTime': closingTime,
+    };
+  }
+
+  void setName(String newName) {
+    name = newName;
   }
 }

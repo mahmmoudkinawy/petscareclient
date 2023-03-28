@@ -250,9 +250,6 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
         }),
       );
 
-      print("REspost ${response.body}");
-      print("Code: ${response.statusCode}");
-
       if (response.statusCode == 200) {
         final clinicJson = jsonDecode(response.body) as Map<String, dynamic>;
         final clinic = Clinic.fromJson(clinicJson);
@@ -262,6 +259,83 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
         });
       } else {
         throw Exception('Failed to create clinic');
+      }
+    }
+  }
+
+  Future<void> _updateClinicName(Clinic clinic) async {
+    final _formKey = GlobalKey<FormBuilderState>();
+    String? updatedClinicName;
+    
+    await showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Update Clinic Name'),
+          content: FormBuilder(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FormBuilderTextField(
+                  name: 'name',
+                  initialValue: clinic.name,
+                  decoration: const InputDecoration(
+                    labelText: 'Name',
+                  ),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.maxLength(50),
+                    FormBuilderValidators.minLength(3),
+                  ]),
+                  onChanged: (value) => updatedClinicName = value,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (updatedClinicName != null) {
+      final user = await getUser();
+
+      final response = await http.put(
+        Uri.parse('http://pets-care.somee.com/api/clinics/${clinic.id}'),
+        headers: {
+          'Authorization': 'Bearer ${user!.token}',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode({
+          'name': updatedClinicName,
+          'address': clinic.address,
+          'phoneNumber': clinic.phoneNumber,
+          'openingTime': clinic.openingTime,
+          'closingTime': clinic.closingTime,
+        }),
+      );
+
+      if (response.statusCode == 204) {
+        setState(() {
+          _fetchClinics();
+        });
+      } else {
+        throw Exception('Failed to update clinic name');
       }
     }
   }
@@ -301,8 +375,8 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  onPressed: () {
-                                    // Navigate to the screen to edit the clinic
+                                  onPressed: () async {
+                                    await _updateClinicName(clinic);
                                   },
                                   icon: const Icon(Icons.edit),
                                 ),
