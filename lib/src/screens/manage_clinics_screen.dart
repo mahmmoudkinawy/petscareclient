@@ -264,14 +264,24 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
   }
 
   Future<void> _updateClinicName(Clinic clinic) async {
+    TimeOfDay? openingTime = TimeOfDay.fromDateTime(
+      DateFormat('HH:mm').parse(clinic.openingTime),
+    );
+    TimeOfDay? closingTime = TimeOfDay.fromDateTime(
+      DateFormat('HH:mm').parse(clinic.closingTime),
+    );
     final _formKey = GlobalKey<FormBuilderState>();
-    String? updatedClinicName;
-    
+    String? updatedClinicName = clinic.name;
+    String? updatedClinicAddress = clinic.address;
+    String? updatedClinicPhoneNumber = clinic.phoneNumber;
+    TimeOfDay? updatedClinicOpeningTime = openingTime;
+    TimeOfDay? updatedClinicClosingTime = closingTime;
+
     await showDialog<void>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Update Clinic Name'),
+          title: const Text('Update Clinic Information'),
           content: FormBuilder(
             key: _formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -291,6 +301,61 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
                   ]),
                   onChanged: (value) => updatedClinicName = value,
                 ),
+                FormBuilderTextField(
+                  name: 'address',
+                  initialValue: clinic.address,
+                  decoration: const InputDecoration(
+                    labelText: 'Address',
+                  ),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.maxLength(100),
+                    FormBuilderValidators.minLength(5),
+                  ]),
+                  onChanged: (value) => updatedClinicAddress = value,
+                ),
+                FormBuilderTextField(
+                  name: 'phoneNumber',
+                  initialValue: clinic.phoneNumber,
+                  decoration: const InputDecoration(
+                    labelText: 'Phone Number',
+                  ),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.numeric(),
+                    FormBuilderValidators.minLength(10),
+                    FormBuilderValidators.maxLength(15),
+                  ]),
+                  onChanged: (value) => updatedClinicPhoneNumber = value,
+                ),
+                FormBuilderDateTimePicker(
+                  name: 'openingTime',
+                  initialTime: openingTime,
+                  inputType: InputType.time,
+                  format: DateFormat('HH:mm'),
+                  decoration: const InputDecoration(
+                    labelText: 'Opening Time',
+                  ),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                  ]),
+                  onChanged: (value) =>
+                      updatedClinicOpeningTime = TimeOfDay.fromDateTime(value!),
+                ),
+                FormBuilderDateTimePicker(
+                  name: 'closingTime',
+                  initialTime: closingTime,
+                  inputType: InputType.time,
+                  format: DateFormat('HH:mm'),
+                  decoration: const InputDecoration(
+                    labelText: 'Closing Time',
+                  ),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                  ]),
+                  onChanged: (value) =>
+                      updatedClinicOpeningTime = TimeOfDay.fromDateTime(value!),
+                ),
               ],
             ),
           ),
@@ -300,9 +365,35 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
               child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  Navigator.pop(context);
+              onPressed: () async {
+                if (_formKey.currentState!.saveAndValidate()) {
+                  final user = await getUser();
+                  final updatedClinic = Clinic(
+                    id: clinic.id,
+                    name: updatedClinicName!,
+                    address: updatedClinicAddress!,
+                    phoneNumber: updatedClinicPhoneNumber!,
+                    openingTime: updatedClinicOpeningTime!.format(context),
+                    closingTime: updatedClinicClosingTime!.format(context),
+                  );
+                  final response = await http.put(
+                    Uri.parse(
+                        'http://pets-care.somee.com/api/clinics/${clinic.id}'),
+                    headers: {
+                      'Authorization': 'Bearer ${user!.token}',
+                      'Content-Type': 'application/json'
+                    },
+                    body: jsonEncode(updatedClinic.toJson()),
+                  );
+
+                  if (response.statusCode == 204) {
+                    setState(() {
+                      _fetchClinics();
+                    });
+                    Navigator.pop(context);
+                  } else {
+                    throw Exception('Failed to update clinic information');
+                  }
                 }
               },
               child: const Text('Save'),
