@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:petscareclient/src/models/user.dart';
 import 'package:petscareclient/src/screens/home_screen.dart';
 import 'package:petscareclient/src/screens/login_screen.dart';
+import 'package:http/http.dart' as http;
 
 import 'aboutus_screen.dart';
 import 'manage_clinics_screen.dart';
@@ -33,6 +39,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
+  Future<void> uploadImage() async {
+    final user = await getUser();
+
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+          'http://pets-care.somee.com/api/users/add-image',
+        ),
+      );
+
+      request.headers.addAll({'Authorization': 'Bearer ${user!.token}'});
+
+      final file = File(pickedFile.path);
+      final filename = file.path.split('/').last;
+      final image = await http.MultipartFile.fromPath('imageFile', file.path,
+          filename: filename);
+      request.files.add(image);
+
+      final response = await request.send();
+
+      print('RESPONSE: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(await response.stream.bytesToString());
+        print(jsonResponse);
+      } else if (response.statusCode == 400) {
+        Fluttertoast.showToast(
+            msg: "Only JPEG and PNG files are allowed.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        print('Error uploading image: ${response.reasonPhrase}');
+        print('Error uploading image: ${response.statusCode}');
+        print(await response.stream.bytesToString());
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,42 +112,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Stack(
-                  children: [
-                    if (_user?.imageUrl != null)
-                      Container(
-                        margin: const EdgeInsets.all(5),
-                        height: 100.0,
-                        width: 100.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          image: DecorationImage(
-                            image: NetworkImage(_user!.imageUrl!),
-                            fit: BoxFit.cover, //change image fill type
-                          ),
-                        ),
-                      )
-                    else if (_user?.name != null)
-                      Container(
-                        margin: const EdgeInsets.all(5),
-                        height: 100.0,
-                        width: 100.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Colors.grey,
-                        ),
-                        child: Center(
-                          child: Text(
-                            _user!.name.substring(0, 1).toUpperCase(),
-                            style: const TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                GestureDetector(
+                  onTap: () async {
+                    // Handle the tap event
+                    await uploadImage();
+                    print('Iam clicked the image');
+                  },
+                  child: Stack(
+                    children: [
+                      FutureBuilder(
+                        future: Future.value(NetworkImage(_user!.imageUrl!)),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Container(
+                              margin: const EdgeInsets.all(5),
+                              height: 100.0,
+                              width: 100.0,
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Container(
+                              margin: const EdgeInsets.all(5),
+                              height: 100.0,
+                              width: 100.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: Colors.grey,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  _user!.name.substring(0, 1).toUpperCase(),
+                                  style: const TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Container(
+                              margin: const EdgeInsets.all(5),
+                              height: 100.0,
+                              width: 100.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                image: DecorationImage(
+                                  image: snapshot.data as ImageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            );
+                          }
+                        },
                       ),
-                  ],
+                    ],
+                  ),
                 ),
                 Text(
                   _user!.name,
@@ -253,7 +329,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: Icon(Icons.home),
+              icon: const Icon(Icons.home),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -262,7 +338,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
               onPressed: () {
                 // Navigate to search screen
               },
@@ -279,7 +355,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               onPressed: () {
                 Navigator.push(
                   context,
