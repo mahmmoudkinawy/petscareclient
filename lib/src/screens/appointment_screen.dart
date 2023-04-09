@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/appointment.dart';
 import '../models/clinic.dart';
 import '../models/doctor.dart';
 import '../models/user.dart';
-
-const String doctorsEndpoint = 'http://pets-care.somee.com/api/doctors';
-const String clinicsEndpoint = 'http://pets-care.somee.com/api/clinics';
+import 'home_screen.dart';
 
 class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({Key? key}) : super(key: key);
@@ -17,8 +19,14 @@ class AppointmentScreen extends StatefulWidget {
 }
 
 class _AppointmentScreenState extends State<AppointmentScreen> {
+  final _formKey = GlobalKey<FormBuilderState>();
+
   String selectedDoctorId = '';
   String selectedClinicId = '';
+  String patientName = '';
+  String patientEmail = '';
+  String phoneNumber = '';
+  String notes = '';
 
   List<Doctor> doctors = [];
   List<Clinic> clinics = [];
@@ -26,44 +34,98 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   Future<void> fetchDoctors() async {
     final user = await getUser();
 
-    try {
-      final response = await http.get(Uri.parse(doctorsEndpoint),
-          headers: {'Authorization': 'Bearer ${user!.token}'});
+    final response = await http.get(
+        Uri.parse('http://pets-care.somee.com/api/doctors'),
+        headers: {'Authorization': 'Bearer ${user!.token}'});
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as List<dynamic>;
-        final fetchedDoctors = data.map((e) => Doctor.fromJson(e)).toList();
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as List<dynamic>;
+      final fetchedDoctors = data.map((e) => Doctor.fromJson(e)).toList();
 
-        setState(() {
-          doctors = fetchedDoctors;
-        });
-      } else {
-        print('Failed to fetch doctors. Error code: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error occurred while fetching doctors: $error');
+      setState(() {
+        doctors = fetchedDoctors;
+      });
+    } else {
+      print('Failed to fetch doctors. Error code: ${response.statusCode}');
     }
   }
 
   Future<void> fetchClinics() async {
     final user = await getUser();
 
-    try {
-      final response = await http.get(Uri.parse(clinicsEndpoint),
-          headers: {'Authorization': 'Bearer ${user!.token}'});
+    final response = await http.get(
+        Uri.parse('http://pets-care.somee.com/api/clinics'),
+        headers: {'Authorization': 'Bearer ${user!.token}'});
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as List<dynamic>;
-        final fetchedClinics = data.map((e) => Clinic.fromJson(e)).toList();
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as List<dynamic>;
+      final fetchedClinics = data.map((e) => Clinic.fromJson(e)).toList();
 
-        setState(() {
-          clinics = fetchedClinics;
-        });
-      } else {
-        print('Failed to fetch clinics. Error code: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error occurred while fetching clinics: $error');
+      setState(() {
+        clinics = fetchedClinics;
+      });
+    } else {
+      print('Failed to fetch clinics. Error code: ${response.statusCode}');
+    }
+  }
+
+  Future<void> submitAppointment() async {
+    final user = await getUser();
+
+    _formKey.currentState!.save();
+
+    final formData = _formKey.currentState!.value;
+
+    final appointment = Appointment(
+      appointmentDate: formData['appointmentDate'],
+      patientName: formData['patientName'],
+      patientEmail: formData['patientEmail'],
+      phoneNumber: formData['phoneNumber'],
+      notes: formData['notes'],
+    );
+
+    final response = await http.post(
+      Uri.parse(
+          'http://pets-care.somee.com/api/doctors/$selectedDoctorId/clinics/$selectedClinicId/appointments'),
+      headers: {
+        'Authorization': 'Bearer ${user!.token}',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'appointmentDate': appointment.appointmentDate.toIso8601String(),
+        'patientName': appointment.patientName,
+        'patientEmail': appointment.patientEmail,
+        'phoneNumber': appointment.phoneNumber,
+        'notes': appointment.notes,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+          msg: "Appointment booked successfully!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (BuildContext context) => const HomeScreen(),
+        ),
+      );
+    } else if (response.statusCode == 400) {
+      Fluttertoast.showToast(
+          msg: "Please ask for another appointment.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      print(response.body);
+      print('Failed to create appointment. Error code: ${response.statusCode}');
     }
   }
 
@@ -76,15 +138,16 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('DOCTORS: ${doctors.length}');
-    print('CLINICS: ${clinics.length}');
-    print('isEmpty doctors: ${clinics.isEmpty}');
-    print('isEmpty clinics: ${doctors.isEmpty}');
-
     if (doctors.isEmpty || clinics.isEmpty) {
-      // Display a loading indicator while waiting for the data to be fetched
-      return Center(
-        child: CircularProgressIndicator(),
+      return Container(
+        color: Colors.white, // set your desired background color here
+        child: const Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+                Colors.blue), // set your desired color for the spinner
+            strokeWidth: 3, // set the width of the spinner
+          ),
+        ),
       );
     }
 
@@ -96,58 +159,140 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
         ? clinicsForInitialDoctor.first.id
         : null;
 
-    print('clinicOwnerId: ' + clinics.first.clinicOwnerId);
-    return Material(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: Column(
-          children: [
-            DropdownButton<String>(
-              value: selectedDoctorId.isNotEmpty
-                  ? selectedDoctorId
-                  : initialDoctorId,
-              hint: const Text('Select a doctor'),
-              onChanged: (value) {
-                setState(() {
-                  selectedDoctorId = value!;
-                });
-              },
-              items: doctors
-                  .map(
-                    (doctor) => DropdownMenuItem<String>(
-                      value: doctor.id,
-                      child: Text(
-                        doctor.fullName,
+    return FormBuilder(
+      key: _formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      child: Material(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: [
+              FormBuilderDropdown<String>(
+                name: 'doctor',
+                initialValue: selectedDoctorId.isNotEmpty
+                    ? selectedDoctorId
+                    : initialDoctorId,
+                decoration: const InputDecoration(
+                  labelText: 'Select a Doctor',
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    selectedDoctorId = value!;
+                    final clinicsForSelectedDoctor = clinics
+                        .where((clinic) => clinic.clinicOwnerId == value)
+                        .toList();
+                    if (clinicsForSelectedDoctor.isNotEmpty) {
+                      selectedClinicId = clinicsForSelectedDoctor.first.id;
+                    }
+                  });
+                },
+                items: doctors
+                    .map(
+                      (doctor) => DropdownMenuItem<String>(
+                        value: doctor.id,
+                        child: Text(
+                          doctor.fullName,
+                        ),
                       ),
-                    ),
-                  )
-                  .toList(),
-            ),
-            DropdownButton<String>(
-              value: selectedClinicId.isNotEmpty
-                  ? selectedClinicId
-                  : initialClinicId,
-              hint: const Text(
-                'Select a clinic',
+                    )
+                    .toList(),
+                validator: FormBuilderValidators.required(),
               ),
-              onChanged: (value) {
-                setState(
-                  () {
-                    selectedClinicId = value!;
-                  },
-                );
-              },
-              items: clinics
-                  .where((clinic) => clinic.clinicOwnerId == selectedDoctorId)
-                  .map(
-                    (clinic) => DropdownMenuItem<String>(
-                      value: clinic.id,
-                      child: Text(clinic.name),
-                    ),
+              FormBuilderDropdown<String>(
+                name: 'clinic',
+                initialValue: selectedClinicId.isNotEmpty
+                    ? selectedClinicId
+                    : initialClinicId,
+                decoration: const InputDecoration(
+                  labelText: 'Select a Clinic',
+                ),
+                onChanged: (value) {
+                  setState(
+                    () {
+                      selectedClinicId = value!;
+                    },
+                  );
+                },
+                items: clinics
+                    .where((clinic) => clinic.clinicOwnerId == selectedDoctorId)
+                    .map(
+                      (clinic) => DropdownMenuItem<String>(
+                        value: clinic.id,
+                        child: Text(clinic.name),
+                      ),
+                    )
+                    .toList(),
+                validator: FormBuilderValidators.required(),
+              ),
+              FormBuilderDateTimePicker(
+                name: 'appointmentDate',
+                initialValue: DateTime.now(),
+                inputType: InputType.both,
+                decoration: const InputDecoration(
+                  labelText: 'Date',
+                ),
+                validator: FormBuilderValidators.required(),
+                selectableDayPredicate: (DateTime date) {
+                  // Disable Fridays and Saturdays
+                  return date.weekday != DateTime.friday &&
+                      date.weekday != DateTime.saturday;
+                },
+              ),
+              FormBuilderTextField(
+                name: 'patientName',
+                decoration: const InputDecoration(
+                  labelText: 'Patient Name',
+                ),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.minLength(3),
+                ]),
+              ),
+              FormBuilderTextField(
+                name: 'patientEmail',
+                decoration: const InputDecoration(
+                  labelText: 'Patient Email',
+                ),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.email(),
+                ]),
+              ),
+              FormBuilderTextField(
+                name: 'phoneNumber',
+                decoration: const InputDecoration(
+                  labelText: 'Phone Number',
+                ),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(
+                      errorText: 'Phone Number is required.'),
+                  FormBuilderValidators.match(
+                    r"^01[0-2,5]{1}[0-9]{8}$",
+                    errorText: "Enter a valid Egyptian Phone Number.",
                   )
-                  .toList(),
-            ),
-          ],
+                ]),
+              ),
+              FormBuilderTextField(
+                name: 'notes',
+                decoration: const InputDecoration(
+                  labelText: 'Notes',
+                ),
+                maxLines: 3,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  if (!_formKey.currentState!.validate()) {
+                    return;
+                  }
+                  submitAppointment();
+                },
+                child: const Text(
+                  'Submit',
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

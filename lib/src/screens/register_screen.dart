@@ -3,6 +3,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -46,29 +47,24 @@ class RegisterScreenState extends State<RegisterScreen> {
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      print(response.body);
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final user = User.fromJson(data);
       saveUser(user);
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
     } else {
-      Flushbar(
-        message: 'Email is already taken.',
-        duration: Duration(seconds: 3),
-        flushbarPosition: FlushbarPosition.BOTTOM,
+      Fluttertoast.showToast(
+        msg: "Email is already taken.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
-        borderRadius: BorderRadius.circular(10),
-        icon: Icon(
-          Icons.info_outline,
-          color: Colors.white,
-        ),
-        maxWidth: MediaQuery.of(context).size.width *
-            0.9, // set the width to 80% of the screen width
-      )..show(context);
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 
@@ -343,7 +339,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
