@@ -40,7 +40,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      print(response.body);
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final user = User.fromJson(data);
       saveUser(user);

@@ -27,8 +27,6 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
         Uri.parse('http://pets-care.somee.com/api/doctors'),
         headers: {'Authorization': 'Bearer ${user!.token}'});
 
-    print('Token: ${user.token}');
-
     if (response.statusCode == 200) {
       final jsonList = json.decode(response.body) as List;
       final doctorsList =

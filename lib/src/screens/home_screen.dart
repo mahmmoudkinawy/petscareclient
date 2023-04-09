@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:petscareclient/src/screens/doctors_screen.dart';
 
 import 'category_detail_screen.dart';
 import 'clinics_screen.dart';
+import 'doctors_screen.dart';
+import 'pets_screen.dart';
 import 'profile_screen.dart';
 import 'setting_screen.dart';
 
@@ -56,9 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const CategoryDetailScreen(
-                        category: 'Pets',
-                      ),
+                      builder: (context) => const PetsScreen(),
                     ),
                   );
                 },
