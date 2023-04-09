@@ -19,7 +19,7 @@ class OnboardingScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Image.asset(
-                'assets/dd.jpg',
+                'assets/dd.png',
                 fit: BoxFit.cover,
               ),
             ),
@@ -43,7 +43,7 @@ class OnboardingScreen extends StatelessWidget {
         title: "Convenient Appointments",
         body: "Schedule appointments easily with our app.",
         image: Image.asset(
-          'assets/doggy6.webp',
+          'assets/00.png',
           fit: BoxFit.cover,
         ),
         decoration: const PageDecoration(

@@ -48,16 +48,21 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              color: Colors.black,
+              onPressed: () => Navigator.of(context).pop(),
+            ),
             pinned: true,
             backgroundColor: Colors.white,
             elevation: 0,
-            title: Text(
+            title: const Text(
               'Available Doctors',
               style: TextStyle(color: Colors.black),
             ),
           ),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             sliver: SliverGrid.count(
               crossAxisCount: 2,
               mainAxisSpacing: 16,
@@ -87,7 +92,7 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                               children: [
                                 Expanded(
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.only(
+                                    borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(4),
                                       topRight: Radius.circular(4),
                                     ),
@@ -113,15 +118,15 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                                     children: [
                                       Text(
                                         doctor.fullName,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      SizedBox(height: 4),
+                                      const SizedBox(height: 4),
                                       Text(
                                         doctor.specialty,
-                                        style: TextStyle(fontSize: 16),
+                                        style: const TextStyle(fontSize: 16),
                                       ),
                                     ],
                                   ),
@@ -134,7 +139,7 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                             elevation: 2,
                             child: Container(
                               height: 200,
-                              child: Center(
+                              child: const Center(
                                 child: CircularProgressIndicator(),
                               ),
                             ),

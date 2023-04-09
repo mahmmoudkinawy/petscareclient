@@ -97,38 +97,41 @@ class _LoginScreenState extends State<LoginScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: Directionality(
-                          textDirection: TextDirection.ltr,
-                          child: FormBuilderTextField(
-                            name: 'email',
-                            controller: emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: SvgPicture.asset(
-                                  'assets/svgs/user.svg',
-                                  color: const Color(0xff8F8F8F),
-                                  height: 24,
-                                  width: 24,
-                                  fit: BoxFit.contain,
-                                  matchTextDirection: true,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: FormBuilderTextField(
+                              name: 'email',
+                              controller: emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                // enabledBorder: OutlineInputBorder(
+                                //   borderRadius: BorderRadius.circular(15.0),
+                                // ),
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SvgPicture.asset(
+                                    'assets/svgs/user.svg',
+                                    color: const Color(0xff8F8F8F),
+                                    height: 24,
+                                    width: 24,
+                                    fit: BoxFit.contain,
+                                    matchTextDirection: true,
+                                  ),
+                                ),
+                                labelText: ' Email',
+                                hintStyle: GoogleFonts.vazirmatn().copyWith(
+                                  fontSize: 14,
+                                  color: const Color(0xffC2C2C2),
                                 ),
                               ),
-                              labelText: ' Email',
-                              hintStyle: GoogleFonts.vazirmatn().copyWith(
-                                fontSize: 14,
-                                color: const Color(0xffC2C2C2),
-                              ),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(
+                                    errorText: 'Email is required.'),
+                                FormBuilderValidators.email(),
+                              ]),
                             ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                  errorText: 'Email is required.'),
-                              FormBuilderValidators.email(),
-                            ]),
                           ),
                         ),
                       ),
@@ -138,49 +141,52 @@ class _LoginScreenState extends State<LoginScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: Directionality(
-                          textDirection: TextDirection.ltr,
-                          child: FormBuilderTextField(
-                            name: 'password',
-                            controller: passwordController,
-                            obscureText: isVisable,
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: SvgPicture.asset(
-                                  'assets/svgs/password.svg',
-                                  color: const Color(0xff8F8F8F),
-                                  height: 24,
-                                  width: 24,
-                                  fit: BoxFit.contain,
-                                  matchTextDirection: true,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: FormBuilderTextField(
+                              name: 'password',
+                              controller: passwordController,
+                              obscureText: isVisable,
+                              decoration: InputDecoration(
+                                // enabledBorder: OutlineInputBorder(
+                                //   borderRadius: BorderRadius.circular(15.0),
+                                // ),
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SvgPicture.asset(
+                                    'assets/svgs/password.svg',
+                                    color: const Color(0xff8F8F8F),
+                                    height: 24,
+                                    width: 24,
+                                    fit: BoxFit.contain,
+                                    matchTextDirection: true,
+                                  ),
+                                ),
+                                suffixIcon: IconButton(
+                                    icon: const Icon(
+                                      Icons.remove_red_eye,
+                                      color: Colors.indigo,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        isVisable = !isVisable;
+                                      });
+                                    }),
+                                labelText: ' Password',
+                                hintTextDirection: TextDirection.ltr,
+                                hintStyle: GoogleFonts.vazirmatn().copyWith(
+                                  fontSize: 14,
+                                  color: const Color(0xffC2C2C2),
                                 ),
                               ),
-                              suffixIcon: IconButton(
-                                  icon: const Icon(
-                                    Icons.remove_red_eye,
-                                    color: Colors.indigo,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      isVisable = !isVisable;
-                                    });
-                                  }),
-                              labelText: ' Password',
-                              hintTextDirection: TextDirection.ltr,
-                              hintStyle: GoogleFonts.vazirmatn().copyWith(
-                                fontSize: 14,
-                                color: const Color(0xffC2C2C2),
-                              ),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(
+                                    errorText: 'Password is required.'),
+                                FormBuilderValidators.minLength(8),
+                              ]),
                             ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                  errorText: 'Password is required.'),
-                              FormBuilderValidators.minLength(8),
-                            ]),
                           ),
                         ),
                       ),

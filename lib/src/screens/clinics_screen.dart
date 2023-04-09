@@ -41,8 +41,21 @@ class _ClinicsScreenState extends State<ClinicsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: const Text('Clinics'),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.grey.shade200,
+        title: const Text(
+          'Clinics',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: _clinics.isEmpty
           ? const Center(
@@ -66,6 +79,11 @@ class _ClinicsScreenState extends State<ClinicsScreen> {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
+                    elevation: 10,
+                    margin: const EdgeInsets.fromLTRB(5, 8, 5, 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

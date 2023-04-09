@@ -19,91 +19,94 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: GridView.count(
-          crossAxisCount: 2,
-          padding: const EdgeInsets.all(10),
-          children: [
-            CategoryCard(
-              title: 'Doctors',
-              image: 'assets/dd.jpg',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DoctorsScreen(),
-                  ),
-                );
-              },
-            ),
-            CategoryCard(
-              title: 'Clinics',
-              image: 'assets/1.jpg',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ClinicsScreen()),
-                );
-              },
-            ),
-            CategoryCard(
-              title: 'Pets',
-              image: 'assets/1.jpg',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CategoryDetailScreen(
-                      category: 'Pets',
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: SafeArea(
+          child: GridView.count(
+            crossAxisCount: 2,
+            padding: const EdgeInsets.all(10),
+            children: [
+              CategoryCard(
+                title: 'Doctors',
+                image: 'assets/doctors.png',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DoctorsScreen(),
                     ),
-                  ),
-                );
-              },
-            ),
-            CategoryCard(
-              title: 'Reviews',
-              image: 'assets/1.jpg',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CategoryDetailScreen(
-                      category: 'Reviews',
+                  );
+                },
+              ),
+              CategoryCard(
+                title: 'Clinics',
+                image: 'assets/clinics.png',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ClinicsScreen()),
+                  );
+                },
+              ),
+              CategoryCard(
+                title: 'Pets',
+                image: 'assets/dog2.png',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CategoryDetailScreen(
+                        category: 'Pets',
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-            CategoryCard(
-              title: 'Cats',
-              image: 'assets/1.jpg',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CategoryDetailScreen(
-                      category: 'Services',
+                  );
+                },
+              ),
+              CategoryCard(
+                title: 'Reviews',
+                image: 'assets/review.png',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryDetailScreen(
+                        category: 'Reviews',
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-            CategoryCard(
-              title: 'Dogs',
-              image: 'assets/1.jpg',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CategoryDetailScreen(
-                      category: 'Services',
+                  );
+                },
+              ),
+              CategoryCard(
+                title: 'Cats',
+                image: 'assets/cats.png',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryDetailScreen(
+                        category: 'Services',
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          ],
+                  );
+                },
+              ),
+              CategoryCard(
+                title: 'Dogs',
+                image: 'assets/Dog.png',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryDetailScreen(
+                        category: 'Services',
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(

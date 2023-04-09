@@ -120,11 +120,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         ListTile(
                           leading: Icon(
-                            Icons.privacy_tip,
+                            Icons.cabin,
                             color: Colors.blue.shade900,
                           ),
                           title: const Text('Manage Clinics'),
-                          trailing: const Icon(Icons.cabin),
+                          trailing: const Icon(Icons.keyboard_arrow_right),
                           onTap: () {
                             Navigator.push(
                               context,

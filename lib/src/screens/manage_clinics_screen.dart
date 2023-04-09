@@ -102,68 +102,73 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
         content: FormBuilder(
           key: _formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              FormBuilderTextField(
-                name: 'name',
-                decoration: const InputDecoration(
-                  labelText: 'Name',
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                FormBuilderTextField(
+                  name: 'name',
+                  decoration: const InputDecoration(
+                    labelText: 'Name',
+                  ),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.maxLength(50),
+                    FormBuilderValidators.minLength(3),
+                  ]),
                 ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.maxLength(50),
-                  FormBuilderValidators.minLength(3),
-                ]),
-              ),
-              FormBuilderTextField(
-                name: 'address',
-                decoration: const InputDecoration(
-                  labelText: 'Address',
+                const SizedBox(height: 5,),
+                FormBuilderTextField(
+                  name: 'address',
+                  decoration: const InputDecoration(
+                    labelText: 'Address',
+                  ),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.maxLength(100),
+                    FormBuilderValidators.minLength(5),
+                  ]),
                 ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.maxLength(100),
-                  FormBuilderValidators.minLength(5),
-                ]),
-              ),
-              FormBuilderTextField(
-                name: 'phoneNumber',
-                decoration: const InputDecoration(
-                  labelText: 'Phone Number',
+                const SizedBox(height: 5,),
+                FormBuilderTextField(
+                  name: 'phoneNumber',
+                  decoration: const InputDecoration(
+                    labelText: 'Phone Number',
+                  ),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(
+                        errorText: 'Phone Number is required.'),
+                    FormBuilderValidators.match(
+                      r"^01[0-2,5]{1}[0-9]{8}$",
+                      errorText: "Enter a valid Egyptian Phone Number.",
+                    )
+                  ]),
                 ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(
-                      errorText: 'Phone Number is required.'),
-                  FormBuilderValidators.match(
-                    r"^01[0-2,5]{1}[0-9]{8}$",
-                    errorText: "Enter a valid Egyptian Phone Number.",
-                  )
-                ]),
-              ),
-              FormBuilderDateTimePicker(
-                name: 'openingTime',
-                inputType: InputType.time,
-                format: DateFormat('h:mm a'),
-                decoration: const InputDecoration(
-                  labelText: 'Opening Time',
+                const SizedBox(height: 5,),
+                FormBuilderDateTimePicker(
+                  name: 'openingTime',
+                  inputType: InputType.time,
+                  format: DateFormat('h:mm a'),
+                  decoration: const InputDecoration(
+                    labelText: 'Opening Time',
+                  ),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                  ]),
                 ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
-              ),
-              FormBuilderDateTimePicker(
-                name: 'closingTime',
-                inputType: InputType.time,
-                format: DateFormat('h:mm a'),
-                decoration: const InputDecoration(
-                  labelText: 'Closing Time',
+                const SizedBox(height: 5,),
+                FormBuilderDateTimePicker(
+                  name: 'closingTime',
+                  inputType: InputType.time,
+                  format: DateFormat('h:mm a'),
+                  decoration: const InputDecoration(
+                    labelText: 'Closing Time',
+                  ),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                  ]),
                 ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         actions: [
@@ -434,15 +439,31 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: const Text('Manage Your Clinics'),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.grey.shade200,
+        title: const Text(
+          "Manage Your Clinics",
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(height: 20.0),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.indigo,),
               onPressed: () async {
                 await _createClinic();
               },
@@ -459,7 +480,11 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         final clinic = _clinics[index];
                         return Card(
-                          child: ListTile(
+                          elevation: 4,
+                          margin: const EdgeInsets.fromLTRB(5, 8, 5, 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),                          child: ListTile(
                             title: Text(clinic.name),
                             subtitle: Text(clinic.address),
                             trailing: Row(

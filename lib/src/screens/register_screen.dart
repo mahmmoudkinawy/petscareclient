@@ -113,217 +113,232 @@ class RegisterScreenState extends State<RegisterScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: FormBuilderTextField(
-                      controller: firstNameController,
-                      name: 'firstName',
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: SvgPicture.asset(
-                            'assets/svgs/user.svg',
-                            color: const Color(0xff8F8F8F),
-                            height: 24,
-                            width: 24,
-                            fit: BoxFit.contain,
-                            matchTextDirection: true,
-                          ),
-                        ),
-                        labelText: ' First name',
-                        hintTextDirection: TextDirection.ltr,
-                        hintStyle: GoogleFonts.vazirmatn().copyWith(
-                          fontSize: 14,
-                          color: const Color(0xffC2C2C2),
-                        ),
-                      ),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                            errorText: 'First Name is required.'),
-                      ]),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Card(
-                  elevation: 20,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: FormBuilderTextField(
-                      controller: lastNameController,
-                      name: 'lastName',
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: SvgPicture.asset(
-                            'assets/svgs/user.svg',
-                            color: const Color(0xff8F8F8F),
-                            height: 24,
-                            width: 24,
-                            fit: BoxFit.contain,
-                            matchTextDirection: true,
-                          ),
-                        ),
-                        labelText: 'Second name',
-                        hintTextDirection: TextDirection.rtl,
-                        hintStyle: GoogleFonts.vazirmatn().copyWith(
-                          fontSize: 14,
-                          color: const Color(0xffC2C2C2),
-                        ),
-                      ),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                            errorText: 'Last Name is required.'),
-                      ]),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Card(
-                  elevation: 20,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: FormBuilderTextField(
-                      controller: phoneNumberController,
-                      name: 'phoneNumber',
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: SvgPicture.asset(
-                            'assets/svgs/phone.svg',
-                            color: const Color(0xff8F8F8F),
-                            height: 24,
-                            width: 24,
-                            fit: BoxFit.contain,
-                            matchTextDirection: true,
-                          ),
-                        ),
-                        labelText: ' Phone Number',
-                        hintTextDirection: TextDirection.ltr,
-                        hintStyle: GoogleFonts.vazirmatn().copyWith(
-                          fontSize: 14,
-                          color: const Color(0xffC2C2C2),
-                        ),
-                      ),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                            errorText: 'Phone Number is required.'),
-                        FormBuilderValidators.match(
-                          r"^01[0-2,5]{1}[0-9]{8}$",
-                          errorText: "Enter a valid Egyptian Phone Number.",
-                        )
-                      ]),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Card(
-                  elevation: 20,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: FormBuilderTextField(
-                      controller: emailController,
-                      name: 'email',
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: SvgPicture.asset(
-                            'assets/svgs/email.svg',
-                            color: const Color(0xff8F8F8F),
-                            height: 24,
-                            width: 24,
-                            fit: BoxFit.contain,
-                            matchTextDirection: true,
-                          ),
-                        ),
-                        labelText: ' Email',
-                        hintTextDirection: TextDirection.rtl,
-                        hintStyle: GoogleFonts.vazirmatn().copyWith(
-                          fontSize: 14,
-                          color: const Color(0xffC2C2C2),
-                        ),
-                      ),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                            errorText: 'Email is required.'),
-                        FormBuilderValidators.email(),
-                      ]),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Card(
-                  elevation: 20,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: FormBuilderTextField(
-                      controller: passwordController,
-                      name: 'password',
-                      obscureText: isVisable,
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: SvgPicture.asset(
-                            'assets/svgs/password.svg',
-                            color: const Color(0xff8F8F8F),
-                            height: 24,
-                            width: 24,
-                            fit: BoxFit.contain,
-                            matchTextDirection: true,
-                          ),
-                        ),
-                        suffixIcon: IconButton(
-                            icon: const Icon(
-                              Icons.remove_red_eye,
-                              color: Colors.indigo,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: FormBuilderTextField(
+                        controller: firstNameController,
+                        name: 'firstName',
+                        decoration: InputDecoration(
+                          // enabledBorder: OutlineInputBorder(
+                          //   borderRadius: BorderRadius.circular(15.0),
+                          // ),
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: SvgPicture.asset(
+                              'assets/svgs/user.svg',
+                              color: const Color(0xff8F8F8F),
+                              height: 24,
+                              width: 24,
+                              fit: BoxFit.contain,
+                              matchTextDirection: true,
                             ),
-                            onPressed: () {
-                              setState(() {
-                                isVisable = !isVisable;
-                              });
-                            }),
-                        labelText: ' Password',
-                        hintTextDirection: TextDirection.rtl,
-                        hintStyle: GoogleFonts.vazirmatn().copyWith(
-                          fontSize: 14,
-                          color: const Color(0xffC2C2C2),
+                          ),
+                          labelText: ' First name',
+                          hintTextDirection: TextDirection.ltr,
+                          hintStyle: GoogleFonts.vazirmatn().copyWith(
+                            fontSize: 14,
+                            color: const Color(0xffC2C2C2),
+                          ),
                         ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(
+                              errorText: 'First Name is required.'),
+                        ]),
                       ),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                            errorText: 'Password is required.'),
-                        FormBuilderValidators.minLength(8),
-                        FormBuilderValidators.match(
-                            r"(?=^.{6,10}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$",
-                            errorText: "Please write more complex password.")
-                      ]),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Card(
+                  elevation: 20,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: FormBuilderTextField(
+                        controller: lastNameController,
+                        name: 'lastName',
+                        decoration: InputDecoration(
+                          // enabledBorder: OutlineInputBorder(
+                          //   borderRadius: BorderRadius.circular(15.0),
+                          // ),
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: SvgPicture.asset(
+                              'assets/svgs/user.svg',
+                              color: const Color(0xff8F8F8F),
+                              height: 24,
+                              width: 24,
+                              fit: BoxFit.contain,
+                              matchTextDirection: true,
+                            ),
+                          ),
+                          labelText: 'Second name',
+                          hintTextDirection: TextDirection.rtl,
+                          hintStyle: GoogleFonts.vazirmatn().copyWith(
+                            fontSize: 14,
+                            color: const Color(0xffC2C2C2),
+                          ),
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(
+                              errorText: 'Last Name is required.'),
+                        ]),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Card(
+                  elevation: 20,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: FormBuilderTextField(
+                        controller: phoneNumberController,
+                        name: 'phoneNumber',
+                        decoration: InputDecoration(
+                          // enabledBorder: OutlineInputBorder(
+                          //   borderRadius: BorderRadius.circular(15.0),
+                          // ),
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: SvgPicture.asset(
+                              'assets/svgs/phone.svg',
+                              color: const Color(0xff8F8F8F),
+                              height: 24,
+                              width: 24,
+                              fit: BoxFit.contain,
+                              matchTextDirection: true,
+                            ),
+                          ),
+                          labelText: ' Phone Number',
+                          hintTextDirection: TextDirection.ltr,
+                          hintStyle: GoogleFonts.vazirmatn().copyWith(
+                            fontSize: 14,
+                            color: const Color(0xffC2C2C2),
+                          ),
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(
+                              errorText: 'Phone Number is required.'),
+                          FormBuilderValidators.match(
+                            r"^01[0-2,5]{1}[0-9]{8}$",
+                            errorText: "Enter a valid Egyptian Phone Number.",
+                          )
+                        ]),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Card(
+                  elevation: 20,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: FormBuilderTextField(
+                        controller: emailController,
+                        name: 'email',
+                        decoration: InputDecoration(
+                          // enabledBorder: OutlineInputBorder(
+                          //   borderRadius: BorderRadius.circular(15.0),
+                          // ),
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: SvgPicture.asset(
+                              'assets/svgs/email.svg',
+                              color: const Color(0xff8F8F8F),
+                              height: 24,
+                              width: 24,
+                              fit: BoxFit.contain,
+                              matchTextDirection: true,
+                            ),
+                          ),
+                          labelText: ' Email',
+                          hintTextDirection: TextDirection.rtl,
+                          hintStyle: GoogleFonts.vazirmatn().copyWith(
+                            fontSize: 14,
+                            color: const Color(0xffC2C2C2),
+                          ),
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(
+                              errorText: 'Email is required.'),
+                          FormBuilderValidators.email(),
+                        ]),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Card(
+                  elevation: 20,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: FormBuilderTextField(
+                        controller: passwordController,
+                        name: 'password',
+                        obscureText: isVisable,
+                        decoration: InputDecoration(
+                          // enabledBorder: OutlineInputBorder(
+                          //   borderRadius: BorderRadius.circular(15.0),
+                          // ),
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: SvgPicture.asset(
+                              'assets/svgs/password.svg',
+                              color: const Color(0xff8F8F8F),
+                              height: 24,
+                              width: 24,
+                              fit: BoxFit.contain,
+                              matchTextDirection: true,
+                            ),
+                          ),
+                          suffixIcon: IconButton(
+                              icon: const Icon(
+                                Icons.remove_red_eye,
+                                color: Colors.indigo,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  isVisable = !isVisable;
+                                });
+                              }),
+                          labelText: ' Password',
+                          hintTextDirection: TextDirection.rtl,
+                          hintStyle: GoogleFonts.vazirmatn().copyWith(
+                            fontSize: 14,
+                            color: const Color(0xffC2C2C2),
+                          ),
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(
+                              errorText: 'Password is required.'),
+                          FormBuilderValidators.minLength(8),
+                          FormBuilderValidators.match(
+                              r"(?=^.{6,10}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$",
+                              errorText: "Please write more complex password.")
+                        ]),
+                      ),
                     ),
                   ),
                 ),
