@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'appointment_screen.dart';
 import 'category_detail_screen.dart';
 import 'clinics_screen.dart';
 import 'doctors_screen.dart';
@@ -69,9 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CategoryDetailScreen(
-                        category: 'Services',
-                      ),
+                      builder: (context) => const AppointmentScreen(),
                     ),
                   );
                 },

@@ -116,7 +116,9 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
                     FormBuilderValidators.minLength(3),
                   ]),
                 ),
-                const SizedBox(height: 5,),
+                const SizedBox(
+                  height: 5,
+                ),
                 FormBuilderTextField(
                   name: 'address',
                   decoration: const InputDecoration(
@@ -128,7 +130,9 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
                     FormBuilderValidators.minLength(5),
                   ]),
                 ),
-                const SizedBox(height: 5,),
+                const SizedBox(
+                  height: 5,
+                ),
                 FormBuilderTextField(
                   name: 'phoneNumber',
                   decoration: const InputDecoration(
@@ -143,7 +147,9 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
                     )
                   ]),
                 ),
-                const SizedBox(height: 5,),
+                const SizedBox(
+                  height: 5,
+                ),
                 FormBuilderDateTimePicker(
                   name: 'openingTime',
                   inputType: InputType.time,
@@ -155,7 +161,9 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
                     FormBuilderValidators.required(),
                   ]),
                 ),
-                const SizedBox(height: 5,),
+                const SizedBox(
+                  height: 5,
+                ),
                 FormBuilderDateTimePicker(
                   name: 'closingTime',
                   inputType: InputType.time,
@@ -203,16 +211,17 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
                       DateFormat('HH:mm:ss').format(closingTime.toLocal());
 
                   final Clinic newClinic = Clinic(
-                    id: '687fe318-d3a4-4a15-afd7-f5af860d009c', // Set to a negative number to indicate a new clinic
-                    name:
-                        _formKey.currentState!.fields['name']!.value as String,
-                    address: _formKey.currentState!.fields['address']!.value
-                        as String,
-                    phoneNumber: _formKey
-                        .currentState!.fields['phoneNumber']!.value as String,
-                    openingTime: openingTimeString,
-                    closingTime: closingTimeString,
-                  );
+                      id:
+                          '687fe318-d3a4-4a15-afd7-f5af860d009c', // Set to a negative number to indicate a new clinic
+                      name: _formKey.currentState!.fields['name']!.value
+                          as String,
+                      address: _formKey.currentState!.fields['address']!.value
+                          as String,
+                      phoneNumber: _formKey
+                          .currentState!.fields['phoneNumber']!.value as String,
+                      openingTime: openingTimeString,
+                      closingTime: closingTimeString,
+                      clinicOwnerId: '687fe318-d3a4-4a15-afd7-f5af860d009c');
                   Navigator.pop(context, true);
                   setState(() {
                     _clinics.add(newClinic);
@@ -380,6 +389,7 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
                     phoneNumber: updatedClinicPhoneNumber!,
                     openingTime: updatedClinicOpeningTime!.format(context),
                     closingTime: updatedClinicClosingTime!.format(context),
+                    clinicOwnerId: '687fe318-d3a4-4a15-afd7-f5af860d009c',
                   );
                   final response = await http.put(
                     Uri.parse(
@@ -463,7 +473,8 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
             const SizedBox(height: 20.0),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.indigo,),
+                primary: Colors.indigo,
+              ),
               onPressed: () async {
                 await _createClinic();
               },
@@ -484,7 +495,8 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
                           margin: const EdgeInsets.fromLTRB(5, 8, 5, 10),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                          ),                          child: ListTile(
+                          ),
+                          child: ListTile(
                             title: Text(clinic.name),
                             subtitle: Text(clinic.address),
                             trailing: Row(

@@ -5,15 +5,16 @@ class Clinic {
   String phoneNumber;
   String openingTime;
   String closingTime;
+  String clinicOwnerId;
 
-  Clinic({
-    required this.id,
-    required this.name,
-    required this.address,
-    required this.phoneNumber,
-    required this.openingTime,
-    required this.closingTime,
-  });
+  Clinic(
+      {required this.id,
+      required this.name,
+      required this.address,
+      required this.phoneNumber,
+      required this.openingTime,
+      required this.closingTime,
+      required this.clinicOwnerId});
 
   factory Clinic.fromJson(Map<String, dynamic> json) {
     return Clinic(
@@ -23,6 +24,7 @@ class Clinic {
       phoneNumber: json['phoneNumber'] as String,
       openingTime: json['openingTime'] as String,
       closingTime: json['closingTime'] as String,
+      clinicOwnerId: json['clinicOwnerId'] as String,
     );
   }
 
@@ -34,6 +36,7 @@ class Clinic {
       'phoneNumber': phoneNumber,
       'openingTime': openingTime,
       'closingTime': closingTime,
+      'clinicOwnerId': clinicOwnerId,
     };
   }
 
