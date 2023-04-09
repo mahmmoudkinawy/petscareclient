@@ -112,66 +112,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                GestureDetector(
-                  onTap: () async {
-                    // Handle the tap event
-                    await uploadImage();
-                    print('Iam clicked the image');
-                  },
-                  child: Stack(
-                    children: [
-                      FutureBuilder(
-                        future: Future.value(NetworkImage(_user!.imageUrl!)),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<dynamic> snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Container(
-                              margin: const EdgeInsets.all(5),
-                              height: 100.0,
-                              width: 100.0,
-                              child: const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                          } else if (snapshot.hasError) {
-                            return Container(
-                              margin: const EdgeInsets.all(5),
-                              height: 100.0,
-                              width: 100.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: Colors.grey,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  _user!.name.substring(0, 1).toUpperCase(),
-                                  style: const TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            );
-                          } else {
-                            return Container(
-                              margin: const EdgeInsets.all(5),
-                              height: 100.0,
-                              width: 100.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                image: DecorationImage(
-                                  image: snapshot.data as ImageProvider,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            );
-                          }
-                        },
+                Stack(
+                  children: [
+                    if (_user?.imageUrl != null)
+                      Container(
+                        margin: const EdgeInsets.all(5),
+                        height: 100.0,
+                        width: 100.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          image: DecorationImage(
+                            image: NetworkImage(_user!.imageUrl!),
+                            fit: BoxFit.cover, //change image fill type
+                          ),
+                        ),
+                      )
+                    else if (_user?.name != null)
+                      Container(
+                        margin: const EdgeInsets.all(5),
+                        height: 100.0,
+                        width: 100.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Colors.grey,
+                        ),
+                        child: Center(
+                          child: Text(
+                            _user!.name.substring(0, 1).toUpperCase(),
+                            style: const TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
+                  ],
                 ),
                 Text(
                   _user!.name,
@@ -329,7 +305,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: const Icon(Icons.home),
+              icon: Icon(Icons.home),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -338,7 +314,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.search),
+              icon: Icon(Icons.search),
               onPressed: () {
                 // Navigate to search screen
               },
@@ -355,7 +331,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.settings),
+              icon: Icon(Icons.settings),
               onPressed: () {
                 Navigator.push(
                   context,
