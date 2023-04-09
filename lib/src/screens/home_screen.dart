@@ -63,6 +63,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               CategoryCard(
+                title: 'Appointments',
+                image: 'assets/appointment.png',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryDetailScreen(
+                        category: 'Services',
+                      ),
+                    ),
+                  );
+                },
+              ),
+              CategoryCard(
                 title: 'Reviews',
                 image: 'assets/review.png',
                 onTap: () {
@@ -83,22 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CategoryDetailScreen(
-                        category: 'Services',
-                      ),
-                    ),
-                  );
-                },
-              ),
-              CategoryCard(
-                title: 'Dogs',
-                image: 'assets/Dog.png',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CategoryDetailScreen(
-                        category: 'Services',
+                      builder: (context) => const CategoryDetailScreen(
+                        category: 'Cats',
                       ),
                     ),
                   );

@@ -33,8 +33,6 @@ class _PetsScreenState extends State<PetsScreen> {
       final jsonResponse = jsonDecode(response.body);
       setState(() {
         _pets = List<Pet>.from(jsonResponse.map((pet) => Pet.fromJson(pet)));
-        print('Length: ${_pets.length}');
-        print('NAME: ${_pets[0].name}');
       });
     } else {
       throw Exception('Failed to fetch Pets');
