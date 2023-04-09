@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-
 import '../models/user.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ClinicsScreen extends StatefulWidget {
   const ClinicsScreen({super.key});
@@ -92,8 +92,17 @@ class _ClinicsScreenState extends State<ClinicsScreen> {
                           subtitle: Text(
                             clinic['address'],
                           ),
-                          trailing: Text(
-                            clinic['phoneNumber'],
+                          trailing: InkWell(
+                            onTap: () {
+                              launch('tel:${clinic['phoneNumber']}');
+                            },
+                            child: Text(
+                              clinic['phoneNumber'],
+                              style: const TextStyle(
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
                           ),
                         ),
                         Padding(

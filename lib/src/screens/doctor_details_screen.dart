@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/doctor.dart';
 import '../models/user.dart';
@@ -42,6 +43,15 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
     }
   }
 
+  void _launchPhoneCall(String phoneNumber) async {
+    final url = 'tel:$phoneNumber';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Doctor doctor = _fetchedDoctor ?? widget.doctor;
@@ -64,64 +74,72 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                     top: 0,
                     left: 0,
                     child: IconButton(
-                      icon:const Icon(Icons.arrow_back_ios,color: Colors.black,),
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.black,
+                      ),
                       onPressed: () => Navigator.pop(context),
                       color: Colors.white,
                     ),
                   ),
-
                 ],
               ),
             ),
             Expanded(
               flex: 1,
               child: Stack(
-                 children:[
-                Card(
-                  elevation: 10,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 24),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24),
-                      color: Colors.white,
+                children: [
+                  Card(
+                    elevation: 10,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          doctor.fullName,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16, horizontal: 24),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            doctor.fullName,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          doctor.specialty,
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 18,
+                          SizedBox(height: 8),
+                          Text(
+                            doctor.specialty,
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 18,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _buildDoctorInfo('Gender', doctor.gender),
-                            _buildDoctorInfo(
-                                'Experience', '${doctor.experience} years'),
-                            _buildDoctorInfo('Phone', doctor.phoneNumber),
-                          ],
-                        ),
-                      ],
+                          SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildDoctorInfo('Gender', doctor.gender),
+                              _buildDoctorInfo(
+                                  'Experience', '${doctor.experience} years'),
+                              GestureDetector(
+                                onTap: () {
+                                  launch("tel:${doctor.phoneNumber}");
+                                },
+                                child: _buildDoctorInfo(
+                                    'Phone Number', doctor.phoneNumber),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
               ),
             ),
           ],
