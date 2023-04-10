@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:petscareclient/src/extensions/string_casing_extension.dart';
 import 'dart:convert';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/doctor_for_search.dart';
 import '../models/user.dart';
@@ -88,8 +89,22 @@ class _SearchScreenState extends State<SearchScreen> {
                     subtitle: Text(
                       doctor.specialty.toTitleCase(),
                     ),
-                    trailing: Text(
-                      doctor.phoneNumber,
+                    trailing: GestureDetector(
+                      onTap: () {
+                        launch('tel:${doctor.phoneNumber}');
+                      },
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Text(
+                          doctor.phoneNumber,
+                          style: const TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
                     ),
                   );
                 },
