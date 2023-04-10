@@ -6,6 +6,7 @@ import 'clinics_screen.dart';
 import 'doctors_screen.dart';
 import 'pets_screen.dart';
 import 'profile_screen.dart';
+import 'search_screen.dart';
 import 'setting_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -131,6 +132,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               onPressed: () {
                 // Navigate to search screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SearchScreen(),
+                  ),
+                );
               },
             ),
             IconButton(
