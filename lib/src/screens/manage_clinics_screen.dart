@@ -35,11 +35,14 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
 
     if (response.statusCode == 200) {
       final clinicsJson = jsonDecode(response.body) as List<dynamic>;
+      ;
       final clinics = clinicsJson.map((json) => Clinic.fromJson(json)).toList();
       setState(() {
         _clinics = clinics;
       });
     } else {
+      print('Failed to fetch clinics. Response: ${response.statusCode}');
+      print('Response body: ${response.body}');
       throw Exception('Failed to fetch clinics');
     }
   }
@@ -185,7 +188,8 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
+              print('Sunmtting data');
               if (_formKey.currentState!.validate()) {
                 final openingTime = _formKey
                     .currentState!.fields['openingTime']!.value as DateTime;
@@ -222,6 +226,7 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
                       openingTime: openingTimeString,
                       closingTime: closingTimeString,
                       clinicOwnerId: '687fe318-d3a4-4a15-afd7-f5af860d009c');
+
                   Navigator.pop(context, true);
                   setState(() {
                     _clinics.add(newClinic);
@@ -229,7 +234,9 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
                 }
               }
             },
-            child: const Text('Add'),
+            child: const Text(
+              'Add',
+            ),
           ),
         ],
       ),
@@ -484,7 +491,9 @@ class _ManageClinicsScreenState extends State<ManageClinicsScreen> {
             Expanded(
               child: _clinics.isEmpty
                   ? const Center(
-                      child: Text('You don\'t have Clinics.'),
+                      child: Text(
+                        'You don\'t have Clinics.',
+                      ),
                     )
                   : ListView.builder(
                       itemCount: _clinics.length,

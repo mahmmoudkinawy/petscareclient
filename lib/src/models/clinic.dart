@@ -17,15 +17,20 @@ class Clinic {
       required this.clinicOwnerId});
 
   factory Clinic.fromJson(Map<String, dynamic> json) {
-    return Clinic(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      address: json['address'] as String,
-      phoneNumber: json['phoneNumber'] as String,
-      openingTime: json['openingTime'] as String,
-      closingTime: json['closingTime'] as String,
-      clinicOwnerId: json['clinicOwnerId'] as String,
-    );
+    try {
+      return Clinic(
+        id: json['id'] ?? '',
+        name: json['name'] ?? '',
+        address: json['address'] ?? '',
+        phoneNumber: json['phoneNumber'] ?? '',
+        openingTime: json['openingTime'] ?? '',
+        closingTime: json['closingTime'] ?? '',
+        clinicOwnerId: json['clinicOwnerId'] ?? '',
+      );
+    } catch (e) {
+      print('Error parsing clinic JSON: $e');
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
