@@ -74,42 +74,51 @@ class _SearchScreenState extends State<SearchScreen> {
               },
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: _doctors.length,
-                itemBuilder: (context, index) {
-                  final doctor = _doctors[index];
-                  return ListTile(
-                    leading: FadeInImage.assetNetwork(
-                      placeholder: 'assets/reload-cat.gif',
-                      image: doctor.imageUrl,
-                    ),
-                    title: Text(
-                      doctor.fullName.toTitleCase(),
-                    ),
-                    subtitle: Text(
-                      doctor.specialty.toTitleCase(),
-                    ),
-                    trailing: GestureDetector(
-                      onTap: () {
-                        launch('tel:${doctor.phoneNumber}');
-                      },
-                      child: MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        child: Text(
-                          doctor.phoneNumber,
-                          style: const TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
+              child: _doctors.isEmpty
+                  ? Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Uh-oh, it looks like our doctors are playing hide-and-seek. Let\'s try again with a different search criteria!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14),
                       ),
+                    )
+                  : ListView.builder(
+                      itemCount: _doctors.length,
+                      itemBuilder: (context, index) {
+                        final doctor = _doctors[index];
+                        return ListTile(
+                          leading: FadeInImage.assetNetwork(
+                            placeholder: 'assets/reload-cat.gif',
+                            image: doctor.imageUrl,
+                          ),
+                          title: Text(
+                            doctor.fullName.toTitleCase(),
+                          ),
+                          subtitle: Text(
+                            doctor.specialty.toTitleCase(),
+                          ),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              launch('tel:${doctor.phoneNumber}');
+                            },
+                            child: MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: Text(
+                                doctor.phoneNumber,
+                                style: const TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            ),
+            )
           ],
         ),
       ),
