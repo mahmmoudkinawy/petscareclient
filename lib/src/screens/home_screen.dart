@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               CategoryCard(
-                title: 'Appointments',
+                title: 'Appointment',
                 image: 'assets/appointment.png',
                 onTap: () {
                   Navigator.push(
@@ -90,14 +90,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               CategoryCard(
-                title: 'Cats',
-                image: 'assets/cats.png',
+                title: 'Chat',
+                image: 'assets/chat.png',
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const CategoryDetailScreen(
-                        category: 'Cats',
+                        category: 'Chat',
                       ),
                     ),
                   );
@@ -112,23 +112,29 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: Icon(Icons.home,
-                  color: _isTap ? Colors.white : Colors.indigo),
+              icon: Icon(
+                Icons.home,
+                color: _isTap ? Colors.white : Colors.indigo,
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(),
+                  ),
                 );
               },
             ),
             IconButton(
-              icon: Icon(Icons.search),
+              icon: const Icon(
+                Icons.search,
+              ),
               onPressed: () {
                 // Navigate to search screen
               },
             ),
             IconButton(
-              icon: Icon(Icons.person),
+              icon: const Icon(Icons.person),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -138,12 +144,15 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(
+                Icons.settings,
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const SettingsScreen()),
+                    builder: (context) => const SettingsScreen(),
+                  ),
                 );
               },
             ),
