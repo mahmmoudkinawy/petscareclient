@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:petscareclient/src/extensions/string_casing_extension.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/doctor.dart';
@@ -105,7 +106,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            doctor.fullName,
+                            doctor.fullName.toTitleCase(),
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 24,

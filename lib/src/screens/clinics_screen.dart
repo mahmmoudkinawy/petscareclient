@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import '../models/user.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:petscareclient/src/extensions/string_casing_extension.dart';
 
 class ClinicsScreen extends StatefulWidget {
   const ClinicsScreen({super.key});
@@ -88,9 +89,11 @@ class _ClinicsScreenState extends State<ClinicsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ListTile(
-                          title: Text(clinic['name']),
+                          title: Text(
+                            '${clinic['name']}'.toTitleCase(),
+                          ),
                           subtitle: Text(
-                            clinic['address'],
+                            '${clinic['address']}'.toTitleCase(),
                           ),
                           trailing: InkWell(
                             onTap: () {

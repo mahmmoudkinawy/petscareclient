@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:petscareclient/src/extensions/string_casing_extension.dart';
 
 import '../models/doctor.dart';
 import '../models/user.dart';
@@ -115,7 +116,7 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        doctor.fullName,
+                                        doctor.fullName.toTitleCase(),
                                         style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,

@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:http/http.dart' as http;
+import 'package:petscareclient/src/extensions/string_casing_extension.dart';
 
 import '../models/appointment.dart';
 import '../models/clinic.dart';
@@ -191,7 +192,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                       (doctor) => DropdownMenuItem<String>(
                         value: doctor.id,
                         child: Text(
-                          doctor.fullName,
+                          doctor.fullName.toTitleCase(),
                         ),
                       ),
                     )
@@ -218,7 +219,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     .map(
                       (clinic) => DropdownMenuItem<String>(
                         value: clinic.id,
-                        child: Text(clinic.name),
+                        child: Text(
+                          clinic.name.toTitleCase(),
+                        ),
                       ),
                     )
                     .toList(),

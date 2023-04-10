@@ -4,10 +4,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:petscareclient/src/extensions/string_casing_extension.dart';
 import 'package:petscareclient/src/models/user.dart';
 import 'package:petscareclient/src/screens/home_screen.dart';
 import 'package:petscareclient/src/screens/login_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 import 'aboutus_screen.dart';
 import 'manage_clinics_screen.dart';
@@ -150,7 +152,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 Text(
-                  _user!.name,
+                  _user!.name.toTitleCase(),
+                  // capitalizeAllWord('ee'),
+                  // _user!.name, // capitalize the first letter of each word
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
