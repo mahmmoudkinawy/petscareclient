@@ -3,14 +3,14 @@ class Appointment {
   final String patientName;
   final String patientEmail;
   final String phoneNumber;
-  final String notes;
+  final String? notes;
 
   Appointment({
     required this.appointmentDate,
     required this.patientName,
     required this.patientEmail,
     required this.phoneNumber,
-    required this.notes,
+    this.notes,
   });
 
   Map<String, dynamic> toJson() {

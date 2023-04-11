@@ -41,6 +41,18 @@ class _PetsScreenState extends State<PetsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_pets.isEmpty) {
+      return Container(
+        color: Colors.blueGrey.shade200, // set your desired background color here
+        child: const Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+                Colors.blue), // set your desired color for the spinner
+            strokeWidth: 3, // set the width of the spinner
+          ),
+        ),
+      );
+    }
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(

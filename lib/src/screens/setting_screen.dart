@@ -102,7 +102,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Icons.format_paint,
                         color: Colors.blue.shade900,
                       ),
-                      title: const Text('Enable Custom Theme - Coming Soon'),
+                      title: const Text('Enable Custom Theme'),
                       value: false,
                       onChanged: (bool value) {}),
                 ],

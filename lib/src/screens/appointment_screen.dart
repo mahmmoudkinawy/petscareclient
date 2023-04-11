@@ -141,7 +141,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   Widget build(BuildContext context) {
     if (doctors.isEmpty || clinics.isEmpty) {
       return Container(
-        color: Colors.white, // set your desired background color here
+        color: Colors.blueGrey.shade200, // set your desired background color here
         child: const Center(
           child: CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(
@@ -160,141 +160,239 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
         ? clinicsForInitialDoctor.first.id
         : null;
 
-    return FormBuilder(
-      key: _formKey,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      child: Material(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: Column(
-            children: [
-              FormBuilderDropdown<String>(
-                name: 'doctor',
-                initialValue: selectedDoctorId.isNotEmpty
-                    ? selectedDoctorId
-                    : initialDoctorId,
-                decoration: const InputDecoration(
-                  labelText: 'Select a Doctor',
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    selectedDoctorId = value!;
-                    final clinicsForSelectedDoctor = clinics
-                        .where((clinic) => clinic.clinicOwnerId == value)
-                        .toList();
-                    if (clinicsForSelectedDoctor.isNotEmpty) {
-                      selectedClinicId = clinicsForSelectedDoctor.first.id;
-                    }
-                  });
-                },
-                items: doctors
-                    .map(
-                      (doctor) => DropdownMenuItem<String>(
-                        value: doctor.id,
-                        child: Text(
-                          doctor.fullName.toTitleCase(),
+    return Scaffold(
+      backgroundColor: Colors.grey.shade200,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.grey.shade200,
+        title: const Text(
+          'Appointments',
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: FormBuilder(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Material(
+            color: Colors.grey.shade200,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Column(
+                children: [
+                  Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FormBuilderDropdown<String>(
+                        name: 'doctor',
+                        initialValue: selectedDoctorId.isNotEmpty
+                            ? selectedDoctorId
+                            : initialDoctorId,
+                        decoration: const InputDecoration(
+                          labelText: 'Select a Doctor',
                         ),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedDoctorId = value!;
+                            final clinicsForSelectedDoctor = clinics
+                                .where((clinic) => clinic.clinicOwnerId == value)
+                                .toList();
+                            if (clinicsForSelectedDoctor.isNotEmpty) {
+                              selectedClinicId = clinicsForSelectedDoctor.first.id;
+                            }
+                          });
+                        },
+                        items: doctors
+                            .map(
+                              (doctor) => DropdownMenuItem<String>(
+                                value: doctor.id,
+                                child: Text(
+                                  doctor.fullName.toTitleCase(),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                        validator: FormBuilderValidators.required(),
                       ),
-                    )
-                    .toList(),
-                validator: FormBuilderValidators.required(),
-              ),
-              FormBuilderDropdown<String>(
-                name: 'clinic',
-                initialValue: selectedClinicId.isNotEmpty
-                    ? selectedClinicId
-                    : initialClinicId,
-                decoration: const InputDecoration(
-                  labelText: 'Select a Clinic',
-                ),
-                onChanged: (value) {
-                  setState(
-                    () {
-                      selectedClinicId = value!;
-                    },
-                  );
-                },
-                items: clinics
-                    .where((clinic) => clinic.clinicOwnerId == selectedDoctorId)
-                    .map(
-                      (clinic) => DropdownMenuItem<String>(
-                        value: clinic.id,
-                        child: Text(
-                          clinic.name.toTitleCase(),
+                    ),
+                  ),
+                  Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FormBuilderDropdown<String>(
+                        name: 'clinic',
+                        initialValue: selectedClinicId.isNotEmpty
+                            ? selectedClinicId
+                            : initialClinicId,
+                        decoration: const InputDecoration(
+                          labelText: 'Select a Clinic',
                         ),
+                        onChanged: (value) {
+                          setState(
+                            () {
+                              selectedClinicId = value!;
+                            },
+                          );
+                        },
+                        items: clinics
+                            .where((clinic) => clinic.clinicOwnerId == selectedDoctorId)
+                            .map(
+                              (clinic) => DropdownMenuItem<String>(
+                                value: clinic.id,
+                                child: Text(
+                                  clinic.name.toTitleCase(),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                        validator: FormBuilderValidators.required(),
                       ),
-                    )
-                    .toList(),
-                validator: FormBuilderValidators.required(),
+                    ),
+                  ),
+                  Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FormBuilderDateTimePicker(
+                        name: 'appointmentDate',
+                        initialValue: DateTime.now(),
+                        inputType: InputType.both,
+                        decoration: const InputDecoration(
+                          labelText: 'Date',
+                        ),
+                        validator: FormBuilderValidators.required(),
+                        selectableDayPredicate: (DateTime date) {
+                          // Disable Fridays and Saturdays
+                          return date.weekday != DateTime.friday &&
+                              date.weekday != DateTime.saturday;
+                        },
+                      ),
+                    ),
+                  ),
+                  Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FormBuilderTextField(
+                        name: 'patientName',
+                        decoration: const InputDecoration(
+                          labelText: 'Patient Name',
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          FormBuilderValidators.minLength(3),
+                        ]),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FormBuilderTextField(
+                        name: 'patientEmail',
+                        decoration: const InputDecoration(
+                          labelText: 'Patient Email',
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          FormBuilderValidators.email(),
+                        ]),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FormBuilderTextField(
+                        name: 'phoneNumber',
+                        decoration: const InputDecoration(
+                          labelText: 'Phone Number',
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(
+                              errorText: 'Phone Number is required.'),
+                          FormBuilderValidators.match(
+                            r"^01[0-2,5]{1}[0-9]{8}$",
+                            errorText: "Enter a valid Egyptian Phone Number.",
+                          )
+                        ]),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FormBuilderTextField(
+                        name: 'notes',
+                        decoration: const InputDecoration(
+                          labelText: 'Notes',
+                        ),
+                        maxLines: 3,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 55,
+                    width: 300,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          shape: MaterialStateProperty.all<
+                              RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(22.0),
+                                side: const BorderSide(color: Colors.black)),
+                          ),
+                          padding: MaterialStateProperty.all(
+                              const EdgeInsets.all(15))),
+                      onPressed: () {
+                        if (!_formKey.currentState!.validate()) {
+                          return;
+                        }
+                        submitAppointment();
+                      },
+                      child: const Text(
+                        'Submit',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
-              FormBuilderDateTimePicker(
-                name: 'appointmentDate',
-                initialValue: DateTime.now(),
-                inputType: InputType.both,
-                decoration: const InputDecoration(
-                  labelText: 'Date',
-                ),
-                validator: FormBuilderValidators.required(),
-                selectableDayPredicate: (DateTime date) {
-                  // Disable Fridays and Saturdays
-                  return date.weekday != DateTime.friday &&
-                      date.weekday != DateTime.saturday;
-                },
-              ),
-              FormBuilderTextField(
-                name: 'patientName',
-                decoration: const InputDecoration(
-                  labelText: 'Patient Name',
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.minLength(3),
-                ]),
-              ),
-              FormBuilderTextField(
-                name: 'patientEmail',
-                decoration: const InputDecoration(
-                  labelText: 'Patient Email',
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.email(),
-                ]),
-              ),
-              FormBuilderTextField(
-                name: 'phoneNumber',
-                decoration: const InputDecoration(
-                  labelText: 'Phone Number',
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(
-                      errorText: 'Phone Number is required.'),
-                  FormBuilderValidators.match(
-                    r"^01[0-2,5]{1}[0-9]{8}$",
-                    errorText: "Enter a valid Egyptian Phone Number.",
-                  )
-                ]),
-              ),
-              FormBuilderTextField(
-                name: 'notes',
-                decoration: const InputDecoration(
-                  labelText: 'Notes',
-                ),
-                maxLines: 3,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (!_formKey.currentState!.validate()) {
-                    return;
-                  }
-                  submitAppointment();
-                },
-                child: const Text(
-                  'Submit',
-                ),
-              )
-            ],
+            ),
           ),
         ),
       ),

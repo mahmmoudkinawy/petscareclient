@@ -42,24 +42,38 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    if (_doctors.isEmpty) {
+      return Container(
+        color: Colors.blueGrey.shade200, // set your desired background color here
+        child: const Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+                Colors.blue), // set your desired color for the spinner
+            strokeWidth: 3, // set the width of the spinner
+          ),
+        ),
+      );
+    }
     return Scaffold(
       backgroundColor: Colors.grey[200],
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+          ),
+          elevation: 0,
+          iconTheme: const IconThemeData(color: Colors.black),
+          backgroundColor: Colors.grey.shade200,
+          title: const Text(
+            'Available Doctors',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
-              color: Colors.black,
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            pinned: true,
-            backgroundColor: Colors.white,
-            elevation: 0,
-            title: const Text(
-              'Available Doctors',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             sliver: SliverGrid.count(
